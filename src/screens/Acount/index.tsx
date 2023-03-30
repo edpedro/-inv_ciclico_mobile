@@ -8,15 +8,18 @@ import {
 import Header from "../../components/Header";
 import { Theme } from "../../themes";
 import { MaterialIcons } from "@expo/vector-icons";
+import { useAuth } from "../../contexts/hooks/Auth";
 
 export default function Acount() {
+  const { signOut } = useAuth();
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.header}>
         <Header />
       </View>
       <View>
-        <TouchableOpacity style={styles.exit}>
+        <TouchableOpacity style={styles.exit} onPress={signOut}>
           <MaterialIcons
             name="exit-to-app"
             size={100}

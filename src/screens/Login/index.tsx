@@ -7,8 +7,14 @@ import {
   SafeAreaView,
 } from "react-native";
 import { Theme } from "../../themes";
+import { useAuth } from "../../contexts/hooks/Auth";
+import { useState } from "react";
 
-export default function Login() {
+export default function Login({ navigation }) {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  const { signIn } = useAuth();
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.cardTitle}>
@@ -18,17 +24,38 @@ export default function Login() {
       <View style={styles.content}>
         <View style={styles.contentUsername}>
           <Text style={styles.titleUsername}>Usuario:</Text>
-          <TextInput style={styles.inputUsername} />
+          <TextInput
+            style={styles.inputUsername}
+            value={username}
+            onChangeText={setUsername}
+          />
         </View>
         <View style={styles.contentPassword}>
           <Text style={styles.titlePassword}>Senha:</Text>
-          <TextInput style={styles.inputPassword} />
+          <TextInput
+            style={styles.inputPassword}
+            secureTextEntry
+            value={password}
+            onChangeText={setPassword}
+          />
         </View>
         <View style={styles.contentButton}>
-          <TouchableOpacity style={styles.buttonAcesso}>
+          <TouchableOpacity
+            style={styles.buttonAcesso}
+            onPress={() => signIn(username, password)}
+          >
             <Text style={styles.titleAcesso}>Acessar</Text>
           </TouchableOpacity>
         </View>
+        <TouchableOpacity
+          style={styles.criarConta}
+          onPress={() => navigation.replace("Register")}
+        >
+          <Text style={styles.titleConta}>
+            Não possuir uma conta?{" "}
+            <Text style={styles.criarTitle}>Cadastre-se</Text>
+          </Text>
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
@@ -37,7 +64,7 @@ export default function Login() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Theme.colors.purple,
+    backgroundColor: Theme.colors.green,
   },
   cardTitle: {
     marginTop: 60,
@@ -131,5 +158,21 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 17,
     fontWeight: "bold",
+  },
+  criarConta: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 80,
+  },
+  titleConta: {
+    fontSize: 16,
+    fontFamily: "Roboto_400Regular",
+    color: Theme.colors.primary,
+  },
+  criarTitle: {
+    fontSize: 16,
+    fontFamily: "Roboto_700Bold",
+    color: Theme.colors.primary,
   },
 });

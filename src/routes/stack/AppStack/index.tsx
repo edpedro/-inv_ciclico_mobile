@@ -9,15 +9,21 @@ import MenuTabs from "../MenuTabs";
 
 const { Navigator, Screen } = createNativeStackNavigator();
 
-export default function AuthStack() {
+export default function AppStack() {
   return (
-    <Navigator initialRouteName="Login">
+    <Navigator initialRouteName="Inicio">
       <Screen
         options={{ headerShown: false }}
-        name="Register"
-        component={Register}
+        name="Inicio"
+        component={MenuTabs}
       />
-      <Screen options={{ headerShown: false }} name="Login" component={Login} />
+      <Screen options={{ headerShown: false }} name="Input" component={Input} />
+      <Screen options={{ headerShown: false }} name="Item" component={Item} />
+      <Screen
+        options={{ headerShown: false }}
+        name="Endereco"
+        component={Endereco}
+      />
     </Navigator>
   );
 }

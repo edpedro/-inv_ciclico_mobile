@@ -19,6 +19,7 @@ import {
   Roboto_900Black_Italic,
 } from "@expo-google-fonts/roboto";
 import { useCallback, useEffect, useState } from "react";
+import AppProvider from "./src/contexts";
 
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
@@ -59,9 +60,11 @@ export default function App() {
     return null;
   }
   return (
-    <View onLayout={onLayout} style={styles.container}>
-      <Routes />
-    </View>
+    <AppProvider>
+      <View onLayout={onLayout} style={styles.container}>
+        <Routes />
+      </View>
+    </AppProvider>
   );
 }
 

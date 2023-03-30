@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { Theme } from "../../themes";
 
-export default function Register() {
+export default function Register({ navigation }) {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.cardTitle}>
@@ -33,6 +33,14 @@ export default function Register() {
             <Text style={styles.titleAcesso}>Cadastrar</Text>
           </TouchableOpacity>
         </View>
+        <TouchableOpacity
+          style={styles.criarLogin}
+          onPress={() => navigation.replace("Login")}
+        >
+          <Text style={styles.titleLog}>
+            Acessa a conta? <Text style={styles.loginTitle}>Login</Text>
+          </Text>
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
@@ -161,5 +169,21 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 17,
     fontWeight: "bold",
+  },
+  criarLogin: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 80,
+  },
+  titleLog: {
+    fontSize: 16,
+    fontFamily: "Roboto_400Regular",
+    color: Theme.colors.primary,
+  },
+  loginTitle: {
+    fontSize: 16,
+    fontFamily: "Roboto_700Bold",
+    color: Theme.colors.primary,
   },
 });
