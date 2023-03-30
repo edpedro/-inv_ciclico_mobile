@@ -2,7 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import api from "../../services/api";
 import { Alert } from "react-native";
-import { navigate } from "../../routes/stack/Navigate";
+import Toast from "react-native-toast-message";
 
 export interface AuthData {
   token: string;
@@ -13,6 +13,7 @@ export interface AuthData {
 interface AuthContextData {
   authData?: AuthData;
   signIn: (username: string, password: string) => Promise<void>;
+  register: (name: string, username: string, password: string) => Promise<void>;
   signOut: () => Promise<void>;
   isLoading: boolean;
 }
@@ -52,9 +53,43 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
       setAuthData(data);
       AsyncStorage.setItem("@AuthData", JSON.stringify(data));
-      // navigate({ name: "Endereco" });
+
+      Toast.show({
+        type: "success",
+        text1: "Acesso",
+        text2: "Logado com sucesso",
+      });
     } catch (error) {
-      Alert.alert(error.message, "Tente novamente");
+      Toast.show({
+        type: "error",
+        text1: "Erro de acesso",
+        text2: "Email ou Senha invalida!",
+      });
+    }
+  }
+
+  async function register(name: string, username: string, password: string) {
+    try {
+      const { data } = await api.post("users", {
+        name,
+        username,
+        password,
+      });
+
+      setAuthData(data);
+      AsyncStorage.setItem("@AuthData", JSON.stringify(data));
+
+      Toast.show({
+        type: "success",
+        text1: "Acesso",
+        text2: "Cadastro feito com sucesso",
+      });
+    } catch (error) {
+      Toast.show({
+        type: "error",
+        text1: "Erro de acesso",
+        text2: "Usuario já existe!",
+      });
     }
   }
 
@@ -64,7 +99,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   }
 
   return (
-    <AuthContext.Provider value={{ authData, signIn, signOut, isLoading }}>
+    <AuthContext.Provider
+      value={{ authData, signIn, signOut, isLoading, register }}
+    >
       {children}
     </AuthContext.Provider>
   );

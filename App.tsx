@@ -1,8 +1,8 @@
-import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 import Routes from "./src/routes";
 import * as SplashScreen from "expo-splash-screen";
 import * as Font from "expo-font";
+import Toast from "react-native-toast-message";
 
 import {
   Roboto_100Thin,
@@ -63,6 +63,7 @@ export default function App() {
     <AppProvider>
       <View onLayout={onLayout} style={styles.container}>
         <Routes />
+        <Toast />
       </View>
     </AppProvider>
   );

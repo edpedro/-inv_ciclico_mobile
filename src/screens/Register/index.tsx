@@ -1,16 +1,27 @@
+import React, { useState } from "react";
 import {
   View,
   Text,
   TextInput,
   StyleSheet,
   TouchableOpacity,
-  SafeAreaView,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
+import { useAuth } from "../../contexts/hooks/Auth";
 import { Theme } from "../../themes";
 
 export default function Register({ navigation }) {
+  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  const { register } = useAuth();
   return (
-    <SafeAreaView style={styles.container}>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={styles.container}
+    >
       <View style={styles.cardTitle}>
         <Text style={styles.titleWelcome}>Bem-vindo</Text>
       </View>
@@ -18,18 +29,34 @@ export default function Register({ navigation }) {
       <View style={styles.content}>
         <View style={styles.contentName}>
           <Text style={styles.titleName}>Nome:</Text>
-          <TextInput style={styles.inputName} />
+          <TextInput
+            style={styles.inputName}
+            value={name}
+            onChangeText={setName}
+          />
         </View>
         <View style={styles.contentUsername}>
           <Text style={styles.titleUsername}>Usuario:</Text>
-          <TextInput style={styles.inputUsername} />
+          <TextInput
+            style={styles.inputUsername}
+            value={username}
+            onChangeText={setUsername}
+          />
         </View>
         <View style={styles.contentPassword}>
           <Text style={styles.titlePassword}>Senha:</Text>
-          <TextInput style={styles.inputPassword} />
+          <TextInput
+            style={styles.inputPassword}
+            secureTextEntry
+            value={password}
+            onChangeText={setPassword}
+          />
         </View>
         <View style={styles.contentButton}>
-          <TouchableOpacity style={styles.buttonAcesso}>
+          <TouchableOpacity
+            style={styles.buttonAcesso}
+            onPress={() => register(name, username, password)}
+          >
             <Text style={styles.titleAcesso}>Cadastrar</Text>
           </TouchableOpacity>
         </View>
@@ -42,13 +69,14 @@ export default function Register({ navigation }) {
           </Text>
         </TouchableOpacity>
       </View>
-    </SafeAreaView>
+    </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    justifyContent: "center",
     backgroundColor: Theme.colors.green,
   },
   cardTitle: {
