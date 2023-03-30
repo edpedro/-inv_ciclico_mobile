@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, Image } from "react-native";
 import { Theme } from "../../themes";
 import { MaterialIcons } from "@expo/vector-icons";
-const profile = require("../../assets/profile.png");
+const user = require("../../assets/user.png");
 
 export default function FlatListAllInventario() {
   return (
@@ -18,7 +18,7 @@ export default function FlatListAllInventario() {
           </View>
           <View style={styles.bodyLine} />
           <View style={styles.nameBody}>
-            <Image source={profile} style={styles.imageProfile} />
+            <Image source={user} style={styles.imageProfile} />
             <View>
               <Text style={styles.nameTitle}>
                 Inventario_ciclico_movel-20.03.2023

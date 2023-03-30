@@ -2,7 +2,7 @@ import { View, Image, Text, StyleSheet } from "react-native";
 
 import { useAuth } from "../../contexts/hooks/Auth";
 
-const profile = require("../../assets/profile.png");
+const user = require("../../assets/user.png");
 
 export default function Header() {
   const { authData } = useAuth();
@@ -10,7 +10,7 @@ export default function Header() {
   return (
     <View style={styles.container}>
       <View style={styles.content}>
-        <Image source={profile} style={styles.imageProfile} />
+        <Image source={user} style={styles.imageProfile} />
         <Text style={styles.contentTitle}>{authData.name}</Text>
       </View>
     </View>
