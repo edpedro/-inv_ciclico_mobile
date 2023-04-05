@@ -7,5 +7,6 @@ export const Theme = {
     secondaryText: "#848484",
     corIcon: "#F27D82",
     black: "#000",
+    yellow: "#FACC2E",
   },
 };

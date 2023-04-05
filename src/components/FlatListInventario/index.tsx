@@ -1,34 +1,46 @@
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import { Theme } from "../../themes";
 import { MaterialIcons } from "@expo/vector-icons";
+
 const user = require("../../assets/user.png");
 
-export default function FlatListInventario() {
+import { InventoryData } from "../../contexts/types";
+
+export default function FlatListInventario({ data }: { data: InventoryData }) {
+  const navigation = useNavigation();
+
   return (
-    <View style={styles.container}>
-      <View style={styles.content}>
-        <View style={styles.line} />
-        <View style={styles.contentBody}>
-          <View style={styles.iniciarBody}>
-            <Text style={styles.iniciarTitle}>INICAR INVENTARIO AGORA</Text>
-            <View style={styles.dateBody}>
-              <MaterialIcons name="update" size={24} color="black" />
-              <Text style={styles.iniciarDate}>Março 20/03/2023</Text>
+    <>
+      <View style={styles.container}>
+        <TouchableOpacity
+          style={styles.content}
+          onPress={() => {
+            navigation.navigate("Endereco", { id: data.id });
+          }}
+          activeOpacity={0.8}
+        >
+          <View style={styles.line} />
+          <View style={styles.contentBody}>
+            <View style={styles.iniciarBody}>
+              <Text style={styles.iniciarTitle}>INICAR INVENTARIO AGORA</Text>
+              <View style={styles.dateBody}>
+                <MaterialIcons name="update" size={24} color="black" />
+                <Text style={styles.iniciarDate}>{data.date}</Text>
+              </View>
+            </View>
+            <View style={styles.bodyLine} />
+            <View style={styles.nameBody}>
+              <Image source={user} style={styles.imageProfile} />
+              <View>
+                <Text style={styles.nameTitle}>{data.name}</Text>
+                <Text style={styles.nameUser}>{data.user.name} - Criador</Text>
+              </View>
             </View>
           </View>
-          <View style={styles.bodyLine} />
-          <View style={styles.nameBody}>
-            <Image source={user} style={styles.imageProfile} />
-            <View>
-              <Text style={styles.nameTitle}>
-                Inventario_ciclico_movel-20.03.2023
-              </Text>
-              <Text style={styles.nameUser}>Eduardo - Criador</Text>
-            </View>
-          </View>
-        </View>
+        </TouchableOpacity>
       </View>
-    </View>
+    </>
   );
 }
 
@@ -39,6 +51,8 @@ const styles = StyleSheet.create({
   content: {
     flexDirection: "row",
     alignItems: "center",
+    marginBottom: 10,
+    elevation: 8,
   },
   line: {
     width: 4,

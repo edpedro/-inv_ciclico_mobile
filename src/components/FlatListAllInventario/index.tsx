@@ -1,9 +1,14 @@
 import { View, Text, StyleSheet, Image } from "react-native";
 import { Theme } from "../../themes";
 import { MaterialIcons } from "@expo/vector-icons";
+import { InventoryData } from "../../contexts/types";
 const user = require("../../assets/user.png");
 
-export default function FlatListAllInventario() {
+export default function FlatListAllInventario({
+  data,
+}: {
+  data: InventoryData;
+}) {
   return (
     <View style={styles.container}>
       <View style={styles.content}>
@@ -13,17 +18,15 @@ export default function FlatListAllInventario() {
             <Text style={styles.iniciarTitle}>FINALIZADO</Text>
             <View style={styles.dateBody}>
               <MaterialIcons name="update" size={24} color="black" />
-              <Text style={styles.iniciarDate}>Março 20/03/2023</Text>
+              <Text style={styles.iniciarDate}>{data.date}</Text>
             </View>
           </View>
           <View style={styles.bodyLine} />
           <View style={styles.nameBody}>
             <Image source={user} style={styles.imageProfile} />
             <View>
-              <Text style={styles.nameTitle}>
-                Inventario_ciclico_movel-20.03.2023
-              </Text>
-              <Text style={styles.nameUser}>Eduardo - Criador</Text>
+              <Text style={styles.nameTitle}>{data.name}</Text>
+              <Text style={styles.nameUser}>{data.user.name} - Criador</Text>
             </View>
           </View>
         </View>

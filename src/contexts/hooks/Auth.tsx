@@ -1,17 +1,22 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import api from "../../services/api";
-import { Alert } from "react-native";
+
 import Toast from "react-native-toast-message";
 
-export interface AuthData {
-  token: string;
+interface AuthData {
   username: string;
   name: string;
 }
 
+interface UItoken {
+  token: string;
+}
+
 interface AuthContextData {
   authData?: AuthData;
+  token: UItoken;
+  setisLoading: (isLoading: boolean) => void;
   signIn: (username: string, password: string) => Promise<void>;
   register: (name: string, username: string, password: string) => Promise<void>;
   signOut: () => Promise<void>;
@@ -24,6 +29,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [authData, setAuthData] = useState<AuthData>();
+  const [token, setToken] = useState<UItoken>();
   const [isLoading, setisLoading] = useState(true);
 
   useEffect(() => {
@@ -33,10 +39,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   async function loadStorageData(): Promise<void> {
     try {
       const authDataSerialized = await AsyncStorage.getItem("@AuthData");
+      const token = await AsyncStorage.getItem("@Token");
 
       if (authDataSerialized) {
         const _authData: AuthData = JSON.parse(authDataSerialized);
+        const _token: UItoken = JSON.parse(token);
+
         setAuthData(_authData);
+        setToken(_token);
       }
     } catch (error) {
     } finally {
@@ -46,13 +56,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   async function signIn(username: string, password: string) {
     try {
-      const { data } = await api.post("/auth/login", {
+      const {
+        data: { payload, token },
+      } = await api.post("/auth/login", {
         username,
         password,
       });
 
-      setAuthData(data);
-      AsyncStorage.setItem("@AuthData", JSON.stringify(data));
+      setAuthData(payload);
+      setToken(token);
+      AsyncStorage.setItem("@AuthData", JSON.stringify(payload));
+      AsyncStorage.setItem("@Token", JSON.stringify(token));
 
       Toast.show({
         type: "success",
@@ -100,7 +114,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   return (
     <AuthContext.Provider
-      value={{ authData, signIn, signOut, isLoading, register }}
+      value={{
+        authData,
+        signIn,
+        signOut,
+        isLoading,
+        register,
+        token,
+        setisLoading,
+      }}
     >
       {children}
     </AuthContext.Provider>

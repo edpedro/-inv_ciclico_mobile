@@ -1,30 +1,47 @@
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { Theme } from "../../themes";
 import { FontAwesome } from "@expo/vector-icons";
-const profile = require("../../assets/profile.png");
+import { ItemData } from "../../contexts/types";
+import { useNavigation } from "@react-navigation/native";
 
-export default function FlatListItem() {
+export default function FlatListItem({ data }: { data: ItemData }) {
+  const navigation = useNavigation();
   return (
-    <View style={styles.container}>
-      <View style={styles.content}>
-        <View style={styles.contentBody}>
-          <View style={styles.enderecoBody}>
-            <Text style={styles.enderecoTitle}>Código</Text>
-            <View style={styles.dateBody}>
-              <FontAwesome name="check" size={24} color={Theme.colors.green} />
+    <>
+      {!data.status && (
+        <View style={styles.container}>
+          <TouchableOpacity
+            style={styles.content}
+            onPress={() => {
+              navigation.navigate("Input", {
+                idItem: data.id,
+                idName: data.baseNameInventario_id,
+              });
+            }}
+            activeOpacity={0.8}
+          >
+            <View style={styles.contentBody}>
+              <View style={styles.enderecoBody}>
+                <Text style={styles.enderecoTitle}>Código</Text>
+                <View style={styles.dateBody}>
+                  <FontAwesome
+                    name="close"
+                    size={24}
+                    color={Theme.colors.corIcon}
+                  />
+                </View>
+              </View>
+              <View>
+                <View style={styles.enderecoIcon}>
+                  <Text style={styles.nameTitle}>{data.item}</Text>
+                  <Text style={styles.nameDescri}>{data.descricao}</Text>
+                </View>
+              </View>
             </View>
-          </View>
-          <View>
-            <View style={styles.enderecoIcon}>
-              <Text style={styles.nameTitle}>0192-0450-0</Text>
-              <Text style={styles.nameDescri}>
-                OTTERBOX COMMUTER GALAXY S5 BCO/CNZA PLC
-              </Text>
-            </View>
-          </View>
+          </TouchableOpacity>
         </View>
-      </View>
-    </View>
+      )}
+    </>
   );
 }
 
@@ -37,7 +54,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   contentBody: {
-    width: "95%",
+    width: "100%",
     height: 80,
     paddingHorizontal: 10,
     borderRadius: 10,
@@ -46,12 +63,12 @@ const styles = StyleSheet.create({
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
-      height: 1,
+      height: 6,
     },
-    shadowOpacity: 0.2,
-    shadowRadius: 1.41,
+    shadowOpacity: 0.37,
+    shadowRadius: 7.49,
 
-    elevation: 2,
+    elevation: 12,
   },
   enderecoBody: {
     flexDirection: "row",
