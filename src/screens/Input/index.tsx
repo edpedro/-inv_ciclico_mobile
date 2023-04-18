@@ -50,7 +50,7 @@ export default function Input({ route }: { route: ItemRouteProp }) {
   const handleTextInputChange = (item: string) => {
     setValueItem(item);
 
-    if (item === itemData[0].item) {
+    if (item.toUpperCase() === itemData[0].item.toUpperCase()) {
       setDescricao(itemData[0].descricao);
       setEndereco(itemData[0].endereco);
       setCategoria(itemData[0].catItem);
@@ -89,7 +89,6 @@ export default function Input({ route }: { route: ItemRouteProp }) {
           <TextInput
             value={valueItem}
             onChangeText={handleTextInputChange}
-            keyboardType="numeric"
             style={styles.input}
           />
         </View>
