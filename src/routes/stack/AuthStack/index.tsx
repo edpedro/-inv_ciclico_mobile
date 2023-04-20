@@ -1,11 +1,9 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import Endereco from "../../../screens/Endereco";
-import Input from "../../../screens/Input";
-import Item from "../../../screens/Item";
-import Login from "../../../screens/Login";
+
 import Register from "../../../screens/Register";
 
-import MenuTabs from "../MenuTabs";
+import LoginNative from "../../../screens/LoginNative";
+import Login from "../../../screens/Login";
 
 const { Navigator, Screen } = createNativeStackNavigator();
 

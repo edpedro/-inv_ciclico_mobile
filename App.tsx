@@ -1,4 +1,5 @@
 import { StyleSheet, Text, View } from "react-native";
+import { NativeBaseProvider } from "native-base";
 import Routes from "./src/routes";
 import * as SplashScreen from "expo-splash-screen";
 import * as Font from "expo-font";
@@ -68,7 +69,6 @@ export default function App() {
     </AppProvider>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
