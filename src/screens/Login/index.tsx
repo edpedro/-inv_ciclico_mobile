@@ -9,16 +9,15 @@ import {
   Input,
   HStack,
 } from "native-base";
-import { useAuth } from "../../contexts/hooks/Auth";
-
 import Toast from "react-native-toast-message";
 import { useLoading } from "../../contexts/hooks/Loading";
+import { useAuth } from "../../contexts/hooks/Auth";
 
 export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const { isLoading } = useLoading();
+  const { isLoadingButton } = useLoading();
   const { signIn } = useAuth();
 
   function handleSubmit() {
@@ -32,7 +31,6 @@ export default function Login() {
       });
     }
   }
-
   return (
     <Center w="100%" h="full" bgColor="green.500">
       <Box safeArea p="2" py="8" w="100%" maxW="350">
@@ -112,7 +110,7 @@ export default function Login() {
               bg: "tertiary.100",
             }}
             onPress={handleSubmit}
-            isLoading={isLoading}
+            isLoading={isLoadingButton}
             _loading={{
               color: "black",
               _text: {

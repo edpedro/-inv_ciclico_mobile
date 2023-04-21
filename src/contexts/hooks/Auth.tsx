@@ -17,11 +17,9 @@ interface UItoken {
 interface AuthContextData {
   authData?: AuthData;
   token: UItoken;
-  setisLoading: (isLoading: boolean) => void;
   signIn: (username: string, password: string) => Promise<void>;
   register: (name: string, username: string, password: string) => Promise<void>;
   signOut: () => Promise<void>;
-  isLoading: boolean;
 }
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
@@ -31,9 +29,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [authData, setAuthData] = useState<AuthData>();
   const [token, setToken] = useState<UItoken>();
-  const [isLoading, setisLoading] = useState(true);
 
-  const { setLoading } = useLoading();
+  const { setLoading, setLoadingButton } = useLoading();
 
   useEffect(() => {
     loadStorageData();
@@ -41,6 +38,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   async function loadStorageData(): Promise<void> {
     try {
+      setLoading(true);
       const authDataSerialized = await AsyncStorage.getItem("@AuthData");
       const token = await AsyncStorage.getItem("@Token");
 
@@ -50,16 +48,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
         setAuthData(_authData);
         setToken(_token);
+        setLoading(false);
       }
     } catch (error) {
     } finally {
-      setisLoading(false);
+      setLoading(false);
     }
   }
 
   async function signIn(username: string, password: string) {
     try {
-      setLoading(true);
+      setLoadingButton(true);
       const {
         data: { payload, token },
       } = await api.post("/auth/login", {
@@ -72,7 +71,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       AsyncStorage.setItem("@AuthData", JSON.stringify(payload));
       AsyncStorage.setItem("@Token", JSON.stringify(token));
 
-      setLoading(false);
+      setLoadingButton(false);
 
       Toast.show({
         type: "success",
@@ -80,7 +79,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         text2: "Logado com sucesso",
       });
     } catch (error) {
-      setLoading(false);
+      setLoadingButton(false);
       Toast.show({
         type: "error",
         text1: "Acesso",
@@ -125,10 +124,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         authData,
         signIn,
         signOut,
-        isLoading,
         register,
         token,
-        setisLoading,
       }}
     >
       {children}

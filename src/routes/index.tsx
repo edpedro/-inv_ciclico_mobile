@@ -4,9 +4,11 @@ import AppStack from "./stack/AppStack";
 import AuthStack from "./stack/AuthStack";
 import { navigationRef } from "./stack/Navigate";
 import { useAuth } from "../contexts/hooks/Auth";
+import { useLoading } from "../contexts/hooks/Loading";
 
 export default function Routes() {
-  const { authData, isLoading } = useAuth();
+  const { authData } = useAuth();
+  const { isLoading } = useLoading();
 
   if (isLoading) {
     return (

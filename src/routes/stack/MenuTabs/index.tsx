@@ -6,14 +6,6 @@ import Inventario from "../../../screens/Inventario";
 
 import CustomTabBar from "../CustomTabBar";
 
-function DetailsScreen1() {
-  return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text>Details Screen1</Text>
-    </View>
-  );
-}
-
 const Tab = createBottomTabNavigator();
 
 export default function MenuTabs() {
@@ -25,7 +17,7 @@ export default function MenuTabs() {
         component={Home}
       />
 
-      <Tab.Screen
+      {/* <Tab.Screen
         options={{ headerShown: false }}
         name="Inventario"
         component={Inventario}
@@ -34,7 +26,7 @@ export default function MenuTabs() {
         options={{ headerShown: false }}
         name="User"
         component={Acount}
-      />
+      /> */}
     </Tab.Navigator>
   );
 }
