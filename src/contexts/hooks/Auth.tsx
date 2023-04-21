@@ -3,6 +3,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import api from "../../services/api";
 
 import Toast from "react-native-toast-message";
+import { useLoading } from "./Loading";
 
 interface AuthData {
   username: string;
@@ -32,6 +33,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [token, setToken] = useState<UItoken>();
   const [isLoading, setisLoading] = useState(true);
 
+  const { setLoading } = useLoading();
+
   useEffect(() => {
     loadStorageData();
   }, []);
@@ -56,6 +59,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   async function signIn(username: string, password: string) {
     try {
+      setLoading(true);
       const {
         data: { payload, token },
       } = await api.post("/auth/login", {
@@ -68,15 +72,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       AsyncStorage.setItem("@AuthData", JSON.stringify(payload));
       AsyncStorage.setItem("@Token", JSON.stringify(token));
 
+      setLoading(false);
+
       Toast.show({
         type: "success",
         text1: "Acesso",
         text2: "Logado com sucesso",
       });
     } catch (error) {
+      setLoading(false);
       Toast.show({
         type: "error",
-        text1: "Erro de acesso",
+        text1: "Acesso",
         text2: "Email ou Senha invalida!",
       });
     }

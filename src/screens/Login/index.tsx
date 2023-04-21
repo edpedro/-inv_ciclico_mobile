@@ -1,178 +1,130 @@
-import {
-  View,
-  Text,
-  TextInput,
-  StyleSheet,
-  TouchableOpacity,
-  SafeAreaView,
-} from "react-native";
-import { Theme } from "../../themes";
-import { useAuth } from "../../contexts/hooks/Auth";
 import { useState } from "react";
+import {
+  Center,
+  Box,
+  Heading,
+  VStack,
+  FormControl,
+  Button,
+  Input,
+  HStack,
+} from "native-base";
+import { useAuth } from "../../contexts/hooks/Auth";
 
-export default function Login({ navigation }) {
+import Toast from "react-native-toast-message";
+import { useLoading } from "../../contexts/hooks/Loading";
+
+export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
+  const { isLoading } = useLoading();
   const { signIn } = useAuth();
+
+  function handleSubmit() {
+    if (username && password) {
+      signIn(username, password);
+    } else {
+      Toast.show({
+        type: "error",
+        text1: "Acesso",
+        text2: "Favor preencher todos dados",
+      });
+    }
+  }
+
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.cardTitle}>
-        <Text style={styles.titleWelcome}>Bem-vindo</Text>
-      </View>
-      <Text style={styles.titleLogin}>Login</Text>
-      <View style={styles.content}>
-        <View style={styles.contentUsername}>
-          <Text style={styles.titleUsername}>Usuario:</Text>
-          <TextInput
-            style={styles.inputUsername}
-            value={username}
-            onChangeText={setUsername}
-          />
-        </View>
-        <View style={styles.contentPassword}>
-          <Text style={styles.titlePassword}>Senha:</Text>
-          <TextInput
-            style={styles.inputPassword}
-            secureTextEntry
-            value={password}
-            onChangeText={setPassword}
-          />
-        </View>
-        <View style={styles.contentButton}>
-          <TouchableOpacity
-            style={styles.buttonAcesso}
-            onPress={() => signIn(username, password)}
-          >
-            <Text style={styles.titleAcesso}>Acessar</Text>
-          </TouchableOpacity>
-        </View>
-        <TouchableOpacity
-          style={styles.criarConta}
-          onPress={() => navigation.replace("Register")}
+    <Center w="100%" h="full" bgColor="green.500">
+      <Box safeArea p="2" py="8" w="100%" maxW="350">
+        <HStack
+          justifyContent="center"
+          flexDirection="column"
+          alignItems="center"
         >
-          <Text style={styles.titleConta}>
-            Não possuir uma conta?{" "}
-            <Text style={styles.criarTitle}>Cadastre-se</Text>
-          </Text>
-        </TouchableOpacity>
-      </View>
-    </SafeAreaView>
+          <Heading
+            size="lg"
+            fontWeight="600"
+            color="dark.900"
+            mb="5"
+            _dark={{
+              color: "warmGray.50",
+            }}
+          >
+            Bem-vindo
+          </Heading>
+          <Heading
+            mt="1"
+            _dark={{
+              color: "warmGray.200",
+            }}
+            color="dark.900"
+            fontWeight="medium"
+            size="xl"
+          >
+            Login
+          </Heading>
+        </HStack>
+
+        <VStack space={3} mt="5">
+          <FormControl>
+            <FormControl.Label
+              _text={{
+                color: "dark.900",
+              }}
+            >
+              Usuario
+            </FormControl.Label>
+            <Input
+              bg="white"
+              _focus={{
+                bg: "white",
+              }}
+              value={username}
+              onChangeText={setUsername}
+            />
+          </FormControl>
+          <FormControl>
+            <FormControl.Label
+              _text={{
+                color: "dark.900",
+              }}
+            >
+              Senha
+            </FormControl.Label>
+            <Input
+              type="password"
+              bg="white"
+              _focus={{
+                bg: "white",
+              }}
+              value={password}
+              onChangeText={setPassword}
+            />
+          </FormControl>
+          <Button
+            mt="10"
+            h="12"
+            bg="tertiary.200"
+            _text={{
+              color: "dark.100",
+            }}
+            _pressed={{
+              bg: "tertiary.100",
+            }}
+            onPress={handleSubmit}
+            isLoading={isLoading}
+            _loading={{
+              color: "black",
+              _text: {
+                color: "black",
+              },
+            }}
+            isLoadingText="Carregando..."
+          >
+            Acessar
+          </Button>
+        </VStack>
+      </Box>
+    </Center>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: Theme.colors.green,
-  },
-  cardTitle: {
-    marginTop: 60,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  titleWelcome: {
-    fontSize: 24,
-    fontWeight: "400",
-    color: Theme.colors.primary,
-  },
-  titleName: {
-    fontSize: 28,
-    fontWeight: "bold",
-    color: Theme.colors.primary,
-  },
-  titleLogin: {
-    textAlign: "center",
-    marginTop: 60,
-    fontSize: 28,
-    fontWeight: "bold",
-    color: Theme.colors.primary,
-  },
-  content: {
-    paddingHorizontal: 30,
-    marginTop: 60,
-  },
-  contentUsername: {
-    marginBottom: 20,
-  },
-  titleUsername: {
-    fontSize: 16,
-    fontWeight: "bold",
-    color: Theme.colors.primary,
-  },
-  inputUsername: {
-    width: "100%",
-    height: 41,
-    padding: 10,
-    marginTop: 20,
-    marginBottom: 10,
-    borderRadius: 5,
-    backgroundColor: Theme.colors.primary,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.23,
-    shadowRadius: 2.62,
-
-    elevation: 4,
-  },
-  contentPassword: {},
-  titlePassword: {
-    fontSize: 16,
-    fontWeight: "bold",
-    color: Theme.colors.primary,
-  },
-  inputPassword: {
-    width: "100%",
-    height: 41,
-    padding: 10,
-    marginTop: 20,
-    marginBottom: 10,
-    borderRadius: 5,
-    backgroundColor: Theme.colors.primary,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.23,
-    shadowRadius: 2.62,
-
-    elevation: 4,
-  },
-  contentButton: {
-    marginTop: 60,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  buttonAcesso: {
-    width: 171,
-    height: 42,
-    borderRadius: 10,
-    backgroundColor: Theme.colors.primary,
-    justifyContent: "center",
-  },
-  titleAcesso: {
-    textAlign: "center",
-    fontSize: 17,
-    fontWeight: "bold",
-  },
-  criarConta: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 80,
-  },
-  titleConta: {
-    fontSize: 16,
-    fontFamily: "Roboto_400Regular",
-    color: Theme.colors.primary,
-  },
-  criarTitle: {
-    fontSize: 16,
-    fontFamily: "Roboto_700Bold",
-    color: Theme.colors.primary,
-  },
-});

@@ -1,5 +1,6 @@
 import React from "react";
 
+import { LoadingProvider } from "./hooks/Loading";
 import { AuthProvider } from "./hooks/Auth";
 import { InventoryProvider } from "./hooks/Inventory";
 
@@ -9,9 +10,11 @@ interface AppProviderProps {
 
 const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   return (
-    <AuthProvider>
-      <InventoryProvider>{children}</InventoryProvider>
-    </AuthProvider>
+    <LoadingProvider>
+      <AuthProvider>
+        <InventoryProvider>{children}</InventoryProvider>
+      </AuthProvider>
+    </LoadingProvider>
   );
 };
 

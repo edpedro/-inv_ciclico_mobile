@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "mobile",
-    "slug": "inventario",
+    "slug": "mobile",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -29,14 +29,14 @@
     },
     "extra": {
       "eas": {
-        "projectId": "f40349ec-229b-4cb9-acc0-e4dcd55018c9"
+        "projectId": "be4ce6e7-3d20-4fa2-a54a-a9c7bb1d21dc"
       }
     },
     "runtimeVersion": {
       "policy": "sdkVersion"
     },
     "updates": {
-      "url": "https://u.expo.dev/6432d060-0172-4deb-a5f2-60300e2eb02f"
+      "url": "https://u.expo.dev/f40349ec-229b-4cb9-acc0-e4dcd55018c9"
     },
     "owner": "edp2013"
   }
