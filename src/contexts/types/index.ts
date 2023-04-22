@@ -2,7 +2,7 @@ export interface InventoryData {
   id: string;
   date: string;
   name: string;
-  status: boolean;
+  status: string;
   user?: {
     name: string;
   };

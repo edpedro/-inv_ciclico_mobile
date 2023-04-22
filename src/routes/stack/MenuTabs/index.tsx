@@ -1,8 +1,8 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { View, Text } from "react-native";
 import Acount from "../../../screens/Acount";
-import Home from "../../../screens/Home";
 import Inventario from "../../../screens/Inventario";
+import Home from "../../../screens/Home";
 
 import CustomTabBar from "../CustomTabBar";
 
@@ -17,7 +17,7 @@ export default function MenuTabs() {
         component={Home}
       />
 
-      {/* <Tab.Screen
+      <Tab.Screen
         options={{ headerShown: false }}
         name="Inventario"
         component={Inventario}
@@ -26,7 +26,7 @@ export default function MenuTabs() {
         options={{ headerShown: false }}
         name="User"
         component={Acount}
-      /> */}
+      />
     </Tab.Navigator>
   );
 }

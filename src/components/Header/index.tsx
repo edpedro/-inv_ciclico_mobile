@@ -1,4 +1,4 @@
-import { View, Image, Text, StyleSheet } from "react-native";
+import { Box, HStack, Avatar, Text } from "native-base";
 
 import { useAuth } from "../../contexts/hooks/Auth";
 
@@ -8,30 +8,24 @@ export default function Header() {
   const { authData } = useAuth();
 
   return (
-    <View style={styles.container}>
-      <View style={styles.content}>
-        <Image source={user} style={styles.imageProfile} />
-        <Text style={styles.contentTitle}>{authData.name}</Text>
-      </View>
-    </View>
+    <Box>
+      <HStack
+        padding={4}
+        w="100%"
+        alignItems="center"
+        justifyContent="space-between"
+        safeArea
+      >
+        <Box flexDirection="row" alignItems="flex-end">
+          <Avatar bg="green.500" source={user}></Avatar>
+          <Text fontFamily="Roboto" fontSize={16} ml={2}>
+            {authData.name}
+          </Text>
+        </Box>
+        <Box>
+          <Text>{new Date().toLocaleDateString()}</Text>
+        </Box>
+      </HStack>
+    </Box>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    marginTop: 30,
-  },
-  content: {
-    flexDirection: "row",
-    alignItems: "flex-end",
-  },
-  imageProfile: {
-    width: 40,
-    height: 40,
-  },
-  contentTitle: {
-    fontSize: 14,
-    fontFamily: "Roboto_300Light",
-    marginLeft: 5,
-  },
-});

@@ -1,4 +1,4 @@
-import { View, Text } from "react-native";
+import { Heading } from "native-base";
 import { NavigationContainer } from "@react-navigation/native";
 import AppStack from "./stack/AppStack";
 import AuthStack from "./stack/AuthStack";
@@ -12,9 +12,17 @@ export default function Routes() {
 
   if (isLoading) {
     return (
-      <View style={{ justifyContent: "center", alignItems: "center", flex: 1 }}>
-        <Text>Carregando informações....</Text>
-      </View>
+      <Heading
+        mt="1"
+        _dark={{
+          color: "warmGray.200",
+        }}
+        color="dark.900"
+        fontWeight="medium"
+        size="xl"
+      >
+        Carregando...
+      </Heading>
     );
   }
 
