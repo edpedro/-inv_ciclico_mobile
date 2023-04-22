@@ -20,13 +20,11 @@ export default function Home() {
       <Heading p="4" pb="3" size="xl">
         Inventarios
       </Heading>
-      <Box>
-        <FlatList
-          data={inventoryData && inventoryData}
-          renderItem={({ item }) => <FlatListInventario data={item} />}
-          keyExtractor={(item) => item.id}
-        />
-      </Box>
+      <FlatList
+        data={inventoryData && inventoryData}
+        renderItem={({ item }) => <FlatListInventario data={item} />}
+        keyExtractor={(item) => item.id}
+      />
     </Box>
   );
 }

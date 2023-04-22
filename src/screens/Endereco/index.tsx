@@ -1,8 +1,7 @@
-import { View, Text, SafeAreaView, StyleSheet, FlatList } from "react-native";
+import { Box, FlatList, Heading } from "native-base";
 import FlatListEndereco from "../../components/FlatListEndereco";
 import Header from "../../components/Header";
-import { Theme } from "../../themes";
-import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
+import { useRoute } from "@react-navigation/native";
 import { inventoryContext } from "../../contexts/hooks/Inventory";
 import { useEffect } from "react";
 import { AddressData } from "../../contexts/types";
@@ -18,10 +17,7 @@ export default function Endereco() {
     ListOneAddressData,
     findOneAddressData,
     updateDataTrue,
-    loadListInventoryData,
   } = inventoryContext();
-
-  const navigation = useNavigation();
 
   const route = useRoute();
 
@@ -36,56 +32,20 @@ export default function Endereco() {
   }, [id, updateDataTrue]);
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <View style={styles.header}>
-        <Header />
-      </View>
-      <View style={styles.content}>
-        <Text style={styles.contentTitle}>
-          {findOneAddressData && findOneAddressData.name}
-        </Text>
-      </View>
-
-      {addressData && addressData.length > 0 ? (
-        <FlatList
-          data={addressData.filter((item) => !item.status)}
-          renderItem={({ item }) => <FlatListEndereco data={item} />}
-          keyExtractor={(address: AddressData) => address.id}
-        />
-      ) : (
-        <View style={styles.feedback}>
-          <Text>Inventario sem endereços</Text>
-        </View>
-      )}
-      {addressData && addressData.every((item) => item.status === true) && (
-        <View style={styles.feedback}>
-          <Text>Todos enderecos contados</Text>
-        </View>
-      )}
-    </SafeAreaView>
+    <Box flex={1} h="full" w="100%" flexDirection="column" bg="white">
+      <Header />
+      <Heading p="4" pb="3" size="xl">
+        {findOneAddressData && findOneAddressData.name}
+      </Heading>
+      <Box>
+        {addressData && addressData.length > 0 ? (
+          <FlatList
+            data={addressData.filter((item) => !item.status)}
+            renderItem={({ item }) => <FlatListEndereco data={item} />}
+            keyExtractor={(address: AddressData) => address.id}
+          />
+        ) : null}
+      </Box>
+    </Box>
   );
 }
-
-const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: Theme.colors.primary,
-    paddingHorizontal: 20,
-  },
-  header: {
-    marginTop: 30,
-  },
-  content: {
-    marginTop: 30,
-  },
-  contentTitle: {
-    fontSize: 20,
-    fontFamily: "Roboto_500Medium",
-  },
-  feedback: {
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 60,
-  },
-});
