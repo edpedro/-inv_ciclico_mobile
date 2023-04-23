@@ -8,12 +8,14 @@ import {
   Button,
   Text,
   Input as InputNative,
+  Icon,
 } from "native-base";
 import { AntDesign } from "@expo/vector-icons";
 import { RouteProp } from "@react-navigation/native";
 import { inventoryContext } from "../../contexts/hooks/Inventory";
 import Toast from "react-native-toast-message";
 import { UpdateData } from "../../contexts/types";
+import { useLoading } from "../../contexts/hooks/Loading";
 
 interface RouteParams {
   idItem: string;
@@ -28,6 +30,8 @@ type ItemRouteProp = RouteProp<RootStackParamList, "Input">;
 
 export default function Input({ route }: { route: ItemRouteProp }) {
   const { ListItemData, itemData, UpdateItemData } = inventoryContext();
+
+  const { isLoadingFetch } = useLoading();
 
   const input2Ref = useRef<TextInput>(null);
 
@@ -202,13 +206,41 @@ export default function Input({ route }: { route: ItemRouteProp }) {
                 h="12"
                 bg="tertiary.200"
                 _text={{
+                  color: "black",
+                }}
+                _pressed={{
+                  bg: "tertiary.100",
+                }}
+                onPress={() => handleSubmit(saldoFisico)}
+                isLoading={isLoadingFetch}
+                _loading={{
+                  color: "black",
+                  _text: {
+                    color: "black",
+                  },
+                }}
+                isLoadingText="Carregando..."
+                leftIcon={
+                  <Icon
+                    as={AntDesign}
+                    name="checkcircleo"
+                    size="md"
+                    color="black"
+                  />
+                }
+              ></Button>
+              {/* <Button
+                mt="6"
+                h="12"
+                bg="tertiary.200"
+                _text={{
                   color: "dark.100",
                 }}
                 _pressed={{
                   bg: "tertiary.100",
                 }}
                 onPress={() => handleSubmit(saldoFisico)}
-                // isLoading={isLoadingButton}
+                isLoading={isLoadingFetch}
                 _loading={{
                   color: "black",
                   _text: {
@@ -222,7 +254,7 @@ export default function Input({ route }: { route: ItemRouteProp }) {
                   size={24}
                   style={{ color: "#000" }}
                 />
-              </Button>
+              </Button> */}
             </>
           )}
         </VStack>

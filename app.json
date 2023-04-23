@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "mobile",
-    "slug": "mobile",
+    "slug": "inventario",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -29,7 +29,7 @@
     },
     "extra": {
       "eas": {
-        "projectId": "be4ce6e7-3d20-4fa2-a54a-a9c7bb1d21dc"
+        "projectId": "61bc5f96-1f00-428a-9700-941a0cce32f0"
       }
     },
     "runtimeVersion": {
