@@ -1,10 +1,4 @@
-import {
-  StyleSheet,
-  SafeAreaView,
-  View,
-  Text,
-  TouchableOpacity,
-} from "react-native";
+import { Box, Button, Center } from "native-base";
 import Header from "../../components/Header";
 import { Theme } from "../../themes";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -14,41 +8,33 @@ export default function Acount() {
   const { signOut } = useAuth();
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <View style={styles.header}>
-        <Header />
-      </View>
-      <View>
-        <TouchableOpacity style={styles.exit} onPress={signOut}>
+    <Box flex={1} h="full" w="100%" flexDirection="column" bg="white">
+      <Header />
+      <Center w="100%" h="full">
+        <Button
+          bg="tertiary.200"
+          _text={{
+            color: "dark.100",
+          }}
+          _pressed={{
+            bg: "tertiary.100",
+          }}
+          onPress={signOut}
+          _loading={{
+            color: "black",
+            _text: {
+              color: "black",
+            },
+          }}
+          isLoadingText="Carregando..."
+        >
           <MaterialIcons
             name="exit-to-app"
             size={100}
             color={Theme.colors.green}
           />
-          <Text style={styles.exitTitle}>Sair</Text>
-        </TouchableOpacity>
-      </View>
-    </SafeAreaView>
+        </Button>
+      </Center>
+    </Box>
   );
 }
-
-const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: Theme.colors.primary,
-    paddingHorizontal: 20,
-  },
-  header: {
-    marginTop: 30,
-  },
-  exit: {
-    marginTop: 150,
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  exitTitle: {
-    fontSize: 16,
-    fontFamily: "Roboto_400Regular",
-  },
-});

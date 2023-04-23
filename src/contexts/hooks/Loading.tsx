@@ -5,6 +5,8 @@ interface LoadingContextData {
   setLoading: (isLoading: boolean) => void;
   isLoadingButton: boolean;
   setLoadingButton: (isLoading: boolean) => void;
+  isLoadingFetch: boolean;
+  setLoadingFetch: (isLoading: boolean) => void;
 }
 
 const LoadingContext = createContext<LoadingContextData>(
@@ -16,6 +18,7 @@ export const LoadingProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingButton, setIsLoadingButton] = useState(false);
+  const [isLoadingFetch, setIsLoadingFetch] = useState(false);
 
   const setLoading = (newIsLoading: boolean) => {
     setIsLoading(newIsLoading);
@@ -25,9 +28,20 @@ export const LoadingProvider: React.FC<{ children: React.ReactNode }> = ({
     setIsLoadingButton(isLoadingButton);
   };
 
+  const setLoadingFetch = (isLoadingFetch: boolean) => {
+    setIsLoadingFetch(isLoadingFetch);
+  };
+
   return (
     <LoadingContext.Provider
-      value={{ isLoading, setLoading, isLoadingButton, setLoadingButton }}
+      value={{
+        isLoading,
+        setLoading,
+        isLoadingButton,
+        setLoadingButton,
+        isLoadingFetch,
+        setLoadingFetch,
+      }}
     >
       {children}
     </LoadingContext.Provider>

@@ -5,6 +5,8 @@ import { useRoute } from "@react-navigation/native";
 import { inventoryContext } from "../../contexts/hooks/Inventory";
 import { useEffect } from "react";
 import { AddressData } from "../../contexts/types";
+import { useLoading } from "../../contexts/hooks/Loading";
+import Spinner from "../../components/Spinner";
 
 interface RouteParams {
   id: string;
@@ -18,6 +20,8 @@ export default function Endereco() {
     findOneAddressData,
     updateDataTrue,
   } = inventoryContext();
+
+  const { isLoadingFetch } = useLoading();
 
   const route = useRoute();
 
@@ -34,18 +38,25 @@ export default function Endereco() {
   return (
     <Box flex={1} h="full" w="100%" flexDirection="column" bg="white">
       <Header />
-      <Heading p="4" pb="3" size="xl">
-        {findOneAddressData && findOneAddressData.name}
-      </Heading>
-      <Box>
-        {addressData && addressData.length > 0 ? (
-          <FlatList
-            data={addressData.filter((item) => !item.status)}
-            renderItem={({ item }) => <FlatListEndereco data={item} />}
-            keyExtractor={(address: AddressData) => address.id}
-          />
-        ) : null}
-      </Box>
+
+      {isLoadingFetch ? (
+        <Spinner />
+      ) : (
+        <>
+          <Heading p="4" pb="3" size="xl">
+            {findOneAddressData && findOneAddressData.name}
+          </Heading>
+          <Box>
+            {addressData && addressData.length > 0 ? (
+              <FlatList
+                data={addressData.filter((item) => !item.status)}
+                renderItem={({ item }) => <FlatListEndereco data={item} />}
+                keyExtractor={(address: AddressData) => address.id}
+              />
+            ) : null}
+          </Box>
+        </>
+      )}
     </Box>
   );
 }

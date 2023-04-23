@@ -1,102 +1,69 @@
-import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
-import { Theme } from "../../themes";
-import { FontAwesome } from "@expo/vector-icons";
+import { Box, HStack, Heading, VStack, Text, Pressable } from "native-base";
+
 import { ItemData } from "../../contexts/types";
 import { useNavigation } from "@react-navigation/native";
 
 export default function FlatListItem({ data }: { data: ItemData }) {
   const navigation = useNavigation();
+
+  const handlePress = () => {
+    navigation.navigate("Input", {
+      idItem: data.id,
+      idName: data.baseNameInventario_id,
+    });
+  };
+
   return (
-    <>
-      {!data.status && (
-        <View style={styles.container}>
-          <TouchableOpacity
-            style={styles.content}
-            onPress={() => {
-              navigation.navigate("Input", {
-                idItem: data.id,
-                idName: data.baseNameInventario_id,
-              });
+    <Pressable onPress={handlePress}>
+      {({ isPressed }) => (
+        <>
+          <Box
+            _dark={{
+              borderColor: "muted.50",
             }}
-            activeOpacity={0.8}
+            borderColor="muted.800"
+            pl={["0", "4"]}
+            pr={["0", "5"]}
+            style={{
+              transform: [
+                {
+                  scale: isPressed ? 0.96 : 1,
+                },
+              ],
+            }}
           >
-            <View style={styles.contentBody}>
-              <View style={styles.enderecoBody}>
-                <Text style={styles.enderecoTitle}>Código</Text>
-                <View style={styles.dateBody}>
-                  <FontAwesome
-                    name="close"
-                    size={24}
-                    color={Theme.colors.corIcon}
-                  />
-                </View>
-              </View>
-              <View>
-                <View style={styles.enderecoIcon}>
-                  <Text style={styles.nameTitle}>{data.item}</Text>
-                  <Text style={styles.nameDescri}>{data.descricao}</Text>
-                </View>
-              </View>
-            </View>
-          </TouchableOpacity>
-        </View>
+            <HStack w="100%" padding={4}>
+              <Box w="95%" h={100} bg="white" rounded="md" shadow="3">
+                <VStack
+                  space={1}
+                  flexDirection="row"
+                  justifyContent="space-between"
+                >
+                  <Heading
+                    size="sm"
+                    fontWeight="200"
+                    color="black"
+                    ml="4"
+                    mt="2"
+                  >
+                    Código
+                  </Heading>
+                </VStack>
+                <HStack ml={4}>
+                  <VStack justifyContent="space-between">
+                    <Text fontSize="2xl" bold>
+                      {data.item}
+                    </Text>
+                    <Text fontSize="sm" color="gray.400">
+                      {data.descricao}
+                    </Text>
+                  </VStack>
+                </HStack>
+              </Box>
+            </HStack>
+          </Box>
+        </>
       )}
-    </>
+    </Pressable>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    marginTop: 15,
-  },
-  content: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  contentBody: {
-    width: "100%",
-    height: 80,
-    paddingHorizontal: 10,
-    borderRadius: 10,
-
-    backgroundColor: Theme.colors.primary,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 6,
-    },
-    shadowOpacity: 0.37,
-    shadowRadius: 7.49,
-
-    elevation: 12,
-  },
-  enderecoBody: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  enderecoTitle: {
-    fontSize: 20,
-    fontFamily: "Roboto_400Regular",
-    color: Theme.colors.secondaryText,
-  },
-  dateBody: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  enderecoDate: {
-    fontSize: 12,
-    fontFamily: "Roboto_500Medium",
-    marginLeft: 10,
-  },
-  enderecoIcon: {
-    flexDirection: "column",
-  },
-  nameTitle: {
-    fontSize: 20,
-    fontFamily: "Roboto_500Medium",
-  },
-  nameDescri: {
-    fontSize: 12,
-    fontFamily: "Roboto_300Light",
-  },
-});

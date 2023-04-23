@@ -1,4 +1,4 @@
-import { NativeBaseProvider, Text } from "native-base";
+import { NativeBaseProvider } from "native-base";
 import Routes from "./src/routes";
 import Toast from "react-native-toast-message";
 
