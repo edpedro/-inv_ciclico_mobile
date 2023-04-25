@@ -55,7 +55,7 @@ export default function FlatListItem({ data }: { data: ItemData }) {
                       {data.item}
                     </Text>
                     <Text fontSize="sm" color="gray.400">
-                      {data.descricao}
+                      {data.descricao.substr(0, 36)}
                     </Text>
                   </VStack>
                 </HStack>

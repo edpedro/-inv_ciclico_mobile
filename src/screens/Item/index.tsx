@@ -43,18 +43,17 @@ export default function Item() {
           <Heading p="4" pb="3" size="xl">
             {endereco}
           </Heading>
-          <Box>
-            {enderecoItemData && enderecoItemData.length > 0 ? (
-              <FlatList
-                data={
-                  enderecoItemData &&
-                  enderecoItemData.filter((item) => !item.status)
-                }
-                renderItem={({ item }) => <FlatListItem data={item} />}
-                keyExtractor={(item) => item.id}
-              />
-            ) : null}
-          </Box>
+
+          {enderecoItemData && enderecoItemData.length > 0 ? (
+            <FlatList
+              data={
+                enderecoItemData &&
+                enderecoItemData.filter((item) => !item.status)
+              }
+              renderItem={({ item }) => <FlatListItem data={item} />}
+              keyExtractor={(item) => item.id}
+            />
+          ) : null}
         </>
       )}
     </Box>

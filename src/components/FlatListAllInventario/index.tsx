@@ -1,6 +1,16 @@
-import { View, Text, StyleSheet, Image } from "react-native";
-import { Theme } from "../../themes";
-import { MaterialIcons } from "@expo/vector-icons";
+import {
+  Avatar,
+  Box,
+  HStack,
+  Heading,
+  VStack,
+  Divider,
+  Text,
+} from "native-base";
+import { format } from "date-fns";
+import { utcToZonedTime } from "date-fns-tz";
+import ptBR from "date-fns/locale/pt-BR";
+
 import { InventoryData } from "../../contexts/types";
 const user = require("../../assets/user.png");
 
@@ -9,104 +19,54 @@ export default function FlatListAllInventario({
 }: {
   data: InventoryData;
 }) {
+  const fusoHorario = "America/Sao_Paulo";
+
   return (
-    <View style={styles.container}>
-      <View style={styles.content}>
-        <View style={styles.line} />
-        <View style={styles.contentBody}>
-          <View style={styles.iniciarBody}>
-            <Text style={styles.iniciarTitle}>FINALIZADO</Text>
-            <View style={styles.dateBody}>
-              <MaterialIcons name="update" size={24} color="black" />
-              <Text style={styles.iniciarDate}>{data.date}</Text>
-            </View>
-          </View>
-          <View style={styles.bodyLine} />
-          <View style={styles.nameBody}>
-            <Image source={user} style={styles.imageProfile} />
-            <View>
-              <Text style={styles.nameTitle}>{data.name}</Text>
-              <Text style={styles.nameUser}>{data.user.name} - Criador</Text>
-            </View>
-          </View>
-        </View>
-      </View>
-    </View>
+    <Box
+      _dark={{
+        borderColor: "muted.50",
+      }}
+      borderColor="muted.800"
+      pl={["0", "4"]}
+      pr={["0", "5"]}
+    >
+      <HStack w="100%" padding={4}>
+        <Divider bg="green.500" thickness="6" orientation="vertical" />
+        <Box w="100%" h={150} bg="white" rounded="md" shadow="3">
+          <VStack space={1} justifyContent="space-between">
+            <Heading
+              size="xs"
+              fontWeight="300"
+              color="gray.700"
+              m="1"
+              mt="3"
+              ml="2"
+            >
+              FINALIZADO
+            </Heading>
+            <Text fontSize="sm" bold ml="2">
+              {format(utcToZonedTime(data.date, fusoHorario), "PPP", {
+                locale: ptBR,
+              })}
+            </Text>
+          </VStack>
+          <Divider
+            my="2"
+            _light={{
+              bg: "gray.100",
+            }}
+          />
+          <HStack space={3} ml={4} mt={1}>
+            <Avatar bg="green.500" source={user}></Avatar>
+            <VStack space={1} justifyContent="space-between">
+              <Text fontSize="md" bold>
+                {data.name}
+              </Text>
+              <Text fontSize="sm">{data.user.name} - Criador</Text>
+            </VStack>
+          </HStack>
+        </Box>
+      </HStack>
+    </Box>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    marginTop: 15,
-  },
-  content: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  line: {
-    width: 4,
-    height: 118,
-    backgroundColor: Theme.colors.green,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  contentBody: {
-    width: "95%",
-    height: 150,
-    paddingHorizontal: 10,
-
-    backgroundColor: Theme.colors.primary,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.2,
-    shadowRadius: 1.41,
-
-    elevation: 2,
-  },
-  iniciarBody: {
-    flexDirection: "column",
-    marginTop: 10,
-    paddingHorizontal: 10,
-  },
-  iniciarTitle: {
-    fontSize: 12,
-    fontFamily: "Roboto_100Thin",
-    marginBottom: 5,
-  },
-  dateBody: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  iniciarDate: {
-    fontSize: 12,
-    fontFamily: "Roboto_500Medium",
-    marginLeft: 10,
-  },
-  bodyLine: {
-    width: 303,
-    height: 1,
-    backgroundColor: Theme.colors.primarySeg,
-    marginTop: 10,
-    marginBottom: 10,
-  },
-  nameBody: {
-    flexDirection: "row",
-  },
-  imageProfile: {
-    width: 40,
-    height: 40,
-    marginRight: 10,
-  },
-  nameTitle: {
-    fontSize: 14,
-    fontFamily: "Roboto_500Medium",
-  },
-  nameUser: {
-    fontSize: 12,
-    fontFamily: "Roboto_300Light",
-    marginTop: 5,
-  },
-});

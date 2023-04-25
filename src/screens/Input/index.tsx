@@ -16,6 +16,7 @@ import { inventoryContext } from "../../contexts/hooks/Inventory";
 import Toast from "react-native-toast-message";
 import { UpdateData } from "../../contexts/types";
 import { useLoading } from "../../contexts/hooks/Loading";
+import Spinner from "../../components/Spinner";
 
 interface RouteParams {
   idItem: string;
@@ -36,12 +37,11 @@ export default function Input({ route }: { route: ItemRouteProp }) {
   const input2Ref = useRef<TextInput>(null);
 
   const [ativeInput, setAtiveInput] = useState(false);
+  const [loading, setLoanding] = useState(false);
 
   const [valueItem, setValueItem] = useState("");
   const [descricao, setDescricao] = useState("");
   const [endereco, setEndereco] = useState("");
-  const [tipoEstoque, setTipoEstoque] = useState("");
-  const [categoria, setCategoria] = useState("");
   const [saldoFisico, setSaldoFisico] = useState("");
 
   const idItem = route.params.idItem;
@@ -64,22 +64,20 @@ export default function Input({ route }: { route: ItemRouteProp }) {
     setValueItem(item);
 
     if (item.toUpperCase() === itemData[0].item.toUpperCase()) {
+      setLoanding(true);
       setAtiveInput(true);
 
       setDescricao(itemData[0].descricao);
       setEndereco(itemData[0].endereco);
-      setCategoria(itemData[0].catItem);
-      setTipoEstoque(itemData[0].tipoEstoque);
+      setLoanding(false);
     } else {
       setDescricao("");
       setEndereco("");
-      setCategoria("");
-      setTipoEstoque("");
     }
   };
 
   function handleSubmit(saldoFisico: string) {
-    if (descricao && endereco && tipoEstoque && saldoFisico && valueItem) {
+    if (descricao && endereco && saldoFisico && valueItem) {
       const data: UpdateData = {
         id: Number(itemData[0].id),
         saldoFisico: Number(saldoFisico),
@@ -90,7 +88,7 @@ export default function Input({ route }: { route: ItemRouteProp }) {
     } else {
       Toast.show({
         type: "error",
-        text1: "Erro de atualizar",
+        text1: "Erro atualizar",
         text2: "Favor preencher dados corretos!",
       });
     }
@@ -112,6 +110,7 @@ export default function Input({ route }: { route: ItemRouteProp }) {
               Código
             </FormControl.Label>
             <InputNative
+              autoFocus={!ativeInput}
               bg="gray.200"
               _focus={{
                 bg: "gray.100",
@@ -120,142 +119,92 @@ export default function Input({ route }: { route: ItemRouteProp }) {
               onChangeText={handleTextInputChange}
             />
           </FormControl>
-          {ativeInput && (
-            <>
-              <FormControl>
-                <FormControl.Label
-                  _text={{
-                    color: "black",
-                  }}
-                >
-                  Descrição
-                </FormControl.Label>
-                <InputNative
-                  bg="gray.200"
-                  isReadOnly={true}
-                  value={descricao}
-                  onChangeText={(descricao) => setDescricao(descricao)}
-                />
-              </FormControl>
-              <FormControl>
-                <FormControl.Label
-                  _text={{
-                    color: "black",
-                  }}
-                >
-                  Endereço
-                </FormControl.Label>
-                <InputNative
-                  bg="gray.200"
-                  isReadOnly={true}
-                  value={endereco}
-                  onChangeText={(endereco) => setEndereco(endereco)}
-                />
-              </FormControl>
-              <FormControl>
-                <FormControl.Label
-                  _text={{
-                    color: "black",
-                  }}
-                >
-                  Tipo Estoque
-                </FormControl.Label>
-                <InputNative
-                  bg="gray.200"
-                  isReadOnly={true}
-                  value={tipoEstoque}
-                  onChangeText={(tipoEstoque) => setTipoEstoque(tipoEstoque)}
-                />
-              </FormControl>
-              <FormControl>
-                <FormControl.Label
-                  _text={{
-                    color: "black",
-                  }}
-                >
-                  Categoria
-                </FormControl.Label>
-                <InputNative
-                  bg="gray.200"
-                  isReadOnly={true}
-                  value={categoria}
-                  onChangeText={(categoria) => setCategoria(categoria)}
-                />
-              </FormControl>
-              <FormControl>
-                <FormControl.Label
-                  _text={{
-                    color: "black",
-                  }}
-                >
-                  Saldo
-                </FormControl.Label>
-                <InputNative
-                  type="text"
-                  bg="gray.200"
-                  _focus={{
-                    bg: "gray.100",
-                  }}
-                  value={saldoFisico}
-                  onChangeText={(saldoFisico) => setSaldoFisico(saldoFisico)}
-                  ref={input2Ref}
-                />
-              </FormControl>
-              <Button
-                mt="6"
-                h="12"
-                bg="tertiary.200"
-                _text={{
-                  color: "black",
-                }}
-                _pressed={{
-                  bg: "tertiary.100",
-                }}
-                onPress={() => handleSubmit(saldoFisico)}
-                isLoading={isLoadingFetch}
-                _loading={{
-                  color: "black",
-                  _text: {
-                    color: "black",
-                  },
-                }}
-                isLoadingText="Carregando..."
-                leftIcon={
-                  <Icon
-                    as={AntDesign}
-                    name="checkcircleo"
-                    size="md"
-                    color="black"
+          {loading ? (
+            <Spinner />
+          ) : (
+            ativeInput && (
+              <>
+                <FormControl>
+                  <FormControl.Label
+                    _text={{
+                      color: "black",
+                    }}
+                  >
+                    Descrição
+                  </FormControl.Label>
+                  <InputNative
+                    bg="gray.200"
+                    isReadOnly={true}
+                    value={descricao}
+                    onChangeText={(descricao) => setDescricao(descricao)}
                   />
-                }
-              ></Button>
-              {/* <Button
-                mt="6"
-                h="12"
-                bg="tertiary.200"
-                _text={{
-                  color: "dark.100",
-                }}
-                _pressed={{
-                  bg: "tertiary.100",
-                }}
-                onPress={() => handleSubmit(saldoFisico)}
-                isLoading={isLoadingFetch}
-                _loading={{
-                  color: "black",
-                  _text: {
+                </FormControl>
+                <FormControl>
+                  <FormControl.Label
+                    _text={{
+                      color: "black",
+                    }}
+                  >
+                    Endereço
+                  </FormControl.Label>
+                  <InputNative
+                    bg="gray.200"
+                    isReadOnly={true}
+                    value={endereco}
+                    onChangeText={(endereco) => setEndereco(endereco)}
+                  />
+                </FormControl>
+                <FormControl>
+                  <FormControl.Label
+                    _text={{
+                      color: "black",
+                    }}
+                  >
+                    Saldo
+                  </FormControl.Label>
+                  <InputNative
+                    type="text"
+                    bg="gray.200"
+                    _focus={{
+                      bg: "gray.100",
+                    }}
+                    value={saldoFisico}
+                    onChangeText={(saldoFisico) => setSaldoFisico(saldoFisico)}
+                    ref={input2Ref}
+                  />
+                </FormControl>
+                <Button
+                  mt="6"
+                  h="12"
+                  bg="tertiary.200"
+                  _text={{
                     color: "black",
-                  },
-                }}
-                isLoadingText="Carregando..."
-              >
-                <AntDesign
-                  name="checkcircleo"
-                  size={24}
-                  style={{ color: "#000" }}
-                />
-              </Button> */}
-            </>
+                  }}
+                  _pressed={{
+                    bg: "tertiary.100",
+                  }}
+                  onPress={() => handleSubmit(saldoFisico)}
+                  isLoading={isLoadingFetch}
+                  _loading={{
+                    _text: {
+                      color: "black",
+                    },
+                  }}
+                  _spinner={{
+                    color: "black",
+                  }}
+                  isLoadingText="Atualizado..."
+                  leftIcon={
+                    <Icon
+                      as={AntDesign}
+                      name="checkcircleo"
+                      size="md"
+                      color="black"
+                    />
+                  }
+                ></Button>
+              </>
+            )
           )}
         </VStack>
       </Box>

@@ -46,15 +46,14 @@ export default function Endereco() {
           <Heading p="4" pb="3" size="xl">
             {findOneAddressData && findOneAddressData.name}
           </Heading>
-          <Box>
-            {addressData && addressData.length > 0 ? (
-              <FlatList
-                data={addressData.filter((item) => !item.status)}
-                renderItem={({ item }) => <FlatListEndereco data={item} />}
-                keyExtractor={(address: AddressData) => address.id}
-              />
-            ) : null}
-          </Box>
+
+          {addressData && addressData.length > 0 ? (
+            <FlatList
+              data={addressData.filter((item) => !item.status)}
+              renderItem={({ item }) => <FlatListEndereco data={item} />}
+              keyExtractor={(address: AddressData) => address.id}
+            />
+          ) : null}
         </>
       )}
     </Box>
