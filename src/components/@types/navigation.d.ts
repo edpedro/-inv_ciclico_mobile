@@ -1,3 +1,5 @@
+import { ItemData } from "../../contexts/types";
+
 export declare global {
   namespace ReactNavigation {
     interface RootParamList {
@@ -12,8 +14,7 @@ export declare global {
         endereco: string;
       };
       Input: {
-        idItem?: string;
-        idName?: string;
+        dataItem: ItemData;
       };
     }
   }

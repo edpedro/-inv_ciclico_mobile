@@ -8,8 +8,7 @@ export default function FlatListItem({ data }: { data: ItemData }) {
 
   const handlePress = () => {
     navigation.navigate("Input", {
-      idItem: data.id,
-      idName: data.baseNameInventario_id,
+      dataItem: data,
     });
   };
 

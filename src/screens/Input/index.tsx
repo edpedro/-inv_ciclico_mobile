@@ -14,13 +14,12 @@ import { AntDesign } from "@expo/vector-icons";
 import { RouteProp } from "@react-navigation/native";
 import { inventoryContext } from "../../contexts/hooks/Inventory";
 import Toast from "react-native-toast-message";
-import { UpdateData } from "../../contexts/types";
+import { ItemData, UpdateData } from "../../contexts/types";
 import { useLoading } from "../../contexts/hooks/Loading";
 import Spinner from "../../components/Spinner";
 
 interface RouteParams {
-  idItem: string;
-  idName: string;
+  dataItem: ItemData;
 }
 
 type RootStackParamList = {
@@ -44,31 +43,23 @@ export default function Input({ route }: { route: ItemRouteProp }) {
   const [endereco, setEndereco] = useState("");
   const [saldoFisico, setSaldoFisico] = useState("");
 
-  const idItem = route.params.idItem;
-  const idName = route.params.idName;
+  const dataItem = route.params.dataItem;
 
   useEffect(() => {
-    const handleListItemInput = async () => {
-      if (idItem && idName) {
-        ListItemData(idItem, idName);
-      }
-    };
-    handleListItemInput();
-
     if (ativeInput) {
       input2Ref.current.focus();
     }
-  }, [idItem, idName, ativeInput]);
+  }, [ativeInput]);
 
   const handleTextInputChange = (item: string) => {
     setValueItem(item);
 
-    if (item.toUpperCase() === itemData[0].item.toUpperCase()) {
+    if (item.toUpperCase() === dataItem.item.toUpperCase()) {
       setLoanding(true);
       setAtiveInput(true);
 
-      setDescricao(itemData[0].descricao);
-      setEndereco(itemData[0].endereco);
+      setDescricao(dataItem.descricao);
+      setEndereco(dataItem.endereco);
       setLoanding(false);
     } else {
       setDescricao("");
@@ -79,12 +70,12 @@ export default function Input({ route }: { route: ItemRouteProp }) {
   function handleSubmit(saldoFisico: string) {
     if (descricao && endereco && saldoFisico && valueItem) {
       const data: UpdateData = {
-        id: Number(itemData[0].id),
+        id: Number(dataItem.id),
         saldoFisico: Number(saldoFisico),
         status: true,
       };
 
-      UpdateItemData(itemData[0].baseNameInventario_id, data);
+      UpdateItemData(dataItem.baseNameInventario_id, data);
     } else {
       Toast.show({
         type: "error",
