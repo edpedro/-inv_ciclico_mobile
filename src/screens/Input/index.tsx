@@ -10,6 +10,8 @@ import {
   Input as InputNative,
   Icon,
 } from "native-base";
+import { useForm, Controller } from "react-hook-form";
+import { debounce } from "lodash";
 import { AntDesign } from "@expo/vector-icons";
 import { RouteProp } from "@react-navigation/native";
 import { inventoryContext } from "../../contexts/hooks/Inventory";
@@ -29,7 +31,8 @@ type RootStackParamList = {
 type ItemRouteProp = RouteProp<RootStackParamList, "Input">;
 
 export default function Input({ route }: { route: ItemRouteProp }) {
-  const { ListItemData, itemData, UpdateItemData } = inventoryContext();
+  const { control, handleSubmit } = useForm();
+  const { UpdateItemData } = inventoryContext();
 
   const { isLoadingFetch } = useLoading();
 
@@ -38,40 +41,39 @@ export default function Input({ route }: { route: ItemRouteProp }) {
   const [ativeInput, setAtiveInput] = useState(false);
   const [loading, setLoanding] = useState(false);
 
-  const [valueItem, setValueItem] = useState("");
   const [descricao, setDescricao] = useState("");
   const [endereco, setEndereco] = useState("");
-  const [saldoFisico, setSaldoFisico] = useState("");
 
   const dataItem = route.params.dataItem;
 
   useEffect(() => {
     if (ativeInput) {
-      input2Ref.current.focus();
+      setTimeout(() => {
+        input2Ref.current.focus();
+      }, 100);
     }
   }, [ativeInput]);
 
-  const handleTextInputChange = (item: string) => {
-    setValueItem(item);
-
-    if (item.toUpperCase() === dataItem.item.toUpperCase()) {
+  const handleInputChange = debounce((value) => {
+    setLoanding(true);
+    if (value.toUpperCase() === dataItem.item.toUpperCase()) {
       setLoanding(true);
       setAtiveInput(true);
 
       setDescricao(dataItem.descricao);
       setEndereco(dataItem.endereco);
-      setLoanding(false);
     } else {
       setDescricao("");
       setEndereco("");
     }
-  };
+    setLoanding(false);
+  }, 500);
 
-  function handleSubmit(saldoFisico: string) {
-    if (descricao && endereco && saldoFisico && valueItem) {
+  const onSubmit = (value) => {
+    if (descricao && endereco && value.saldoFisico) {
       const data: UpdateData = {
         id: Number(dataItem.id),
-        saldoFisico: Number(saldoFisico),
+        saldoFisico: Number(value.saldoFisico),
         status: true,
       };
 
@@ -83,7 +85,7 @@ export default function Input({ route }: { route: ItemRouteProp }) {
         text2: "Favor preencher dados corretos!",
       });
     }
-  }
+  };
 
   return (
     <Center w="100%" h="full" bgColor="white">
@@ -100,14 +102,21 @@ export default function Input({ route }: { route: ItemRouteProp }) {
             >
               Código
             </FormControl.Label>
-            <InputNative
-              autoFocus={!ativeInput}
-              bg="gray.200"
-              _focus={{
-                bg: "gray.100",
-              }}
-              value={valueItem}
-              onChangeText={handleTextInputChange}
+            <Controller
+              control={control}
+              render={({ field: { onBlur, value } }) => (
+                <InputNative
+                  autoFocus={!ativeInput}
+                  bg="gray.200"
+                  _focus={{
+                    bg: "gray.100",
+                  }}
+                  onBlur={onBlur}
+                  onChangeText={handleInputChange}
+                  value={value}
+                />
+              )}
+              name="codigo"
             />
           </FormControl>
           {loading ? (
@@ -153,15 +162,22 @@ export default function Input({ route }: { route: ItemRouteProp }) {
                   >
                     Saldo
                   </FormControl.Label>
-                  <InputNative
-                    type="text"
-                    bg="gray.200"
-                    _focus={{
-                      bg: "gray.100",
-                    }}
-                    value={saldoFisico}
-                    onChangeText={(saldoFisico) => setSaldoFisico(saldoFisico)}
-                    ref={input2Ref}
+                  <Controller
+                    control={control}
+                    render={({ field: { onChange, onBlur, value } }) => (
+                      <InputNative
+                        keyboardType="numeric"
+                        bg="gray.200"
+                        _focus={{
+                          bg: "gray.100",
+                        }}
+                        onBlur={onBlur}
+                        onChangeText={onChange}
+                        value={value}
+                        ref={input2Ref}
+                      />
+                    )}
+                    name="saldoFisico"
                   />
                 </FormControl>
                 <Button
@@ -174,7 +190,7 @@ export default function Input({ route }: { route: ItemRouteProp }) {
                   _pressed={{
                     bg: "tertiary.100",
                   }}
-                  onPress={() => handleSubmit(saldoFisico)}
+                  onPress={handleSubmit(onSubmit)}
                   isLoading={isLoadingFetch}
                   _loading={{
                     _text: {

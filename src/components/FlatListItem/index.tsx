@@ -43,7 +43,7 @@ export default function FlatListItem({ data }: { data: ItemData }) {
                     fontWeight="200"
                     color="black"
                     ml="4"
-                    mt="2"
+                    mt="3"
                   >
                     Código
                   </Heading>
@@ -53,8 +53,8 @@ export default function FlatListItem({ data }: { data: ItemData }) {
                     <Text fontSize="2xl" bold>
                       {data.item}
                     </Text>
-                    <Text fontSize="sm" color="gray.400">
-                      {data.descricao.substr(0, 36)}
+                    <Text fontSize="xs" color="gray.400">
+                      {data.descricao.substring(0, 36)}
                     </Text>
                   </VStack>
                 </HStack>
