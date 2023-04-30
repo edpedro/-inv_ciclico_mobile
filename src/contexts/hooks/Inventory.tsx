@@ -182,8 +182,7 @@ export const InventoryProvider: React.FC<{ children: React.ReactNode }> = ({
         },
       });
       setUpdateDataTrue(data);
-      //await ListItemEnderecoData(data.endereco, data.baseNameInventario_id);
-      // console.log(data.endereco, data.baseNameInventario_id);
+
       setLoadingFetch(false);
       Toast.show({
         type: "success",

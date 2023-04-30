@@ -106,7 +106,6 @@ export default function Input({ route }: { route: ItemRouteProp }) {
               control={control}
               render={({ field: { onBlur, value } }) => (
                 <InputNative
-                  autoFocus={!ativeInput}
                   bg="gray.200"
                   _focus={{
                     bg: "gray.100",

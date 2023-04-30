@@ -1,4 +1,4 @@
-import { Box, FlatList, Heading } from "native-base";
+import { Box, FlatList, Heading, Text } from "native-base";
 import FlatListEndereco from "../../components/FlatListEndereco";
 import Header from "../../components/Header";
 import { useRoute } from "@react-navigation/native";
@@ -53,7 +53,11 @@ export default function Endereco() {
               renderItem={({ item }) => <FlatListEndereco data={item} />}
               keyExtractor={(address: AddressData) => address.id}
             />
-          ) : null}
+          ) : (
+            <Box alignItems="center" mt="20">
+              <Text>Falta finalizar o processo</Text>
+            </Box>
+          )}
         </>
       )}
     </Box>

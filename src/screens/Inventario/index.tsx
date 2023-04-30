@@ -41,9 +41,18 @@ export default function Inventario() {
               }}
             />
           ) : (
-            <Box alignItems="center" mt="20">
-              <Text>No momento sem inventário</Text>
-            </Box>
+            <FlatList
+              data={[1]}
+              renderItem={() => (
+                <Box alignItems="center" mt="20">
+                  <Text>No momento sem inventário</Text>
+                </Box>
+              )}
+              refreshing={refreshing}
+              onRefresh={() => {
+                setRefreshing(true);
+              }}
+            />
           )}
         </>
       )}

@@ -6,7 +6,8 @@ import { inventoryContext } from "../../contexts/hooks/Inventory";
 import { useLoading } from "../../contexts/hooks/Loading";
 
 export default function Home() {
-  const { inventoryData, loadListInventoryData } = inventoryContext();
+  const { inventoryData, loadListInventoryData, updateDataTrue } =
+    inventoryContext();
 
   const { isLoadingFetch } = useLoading();
 
@@ -17,8 +18,10 @@ export default function Home() {
       await loadListInventoryData();
       setRefreshing(false);
     };
-    handleLoadList();
-  }, [refreshing]);
+    if (refreshing) {
+      handleLoadList();
+    }
+  }, [refreshing, updateDataTrue]);
 
   return (
     <Box flex={1} h="full" w="100%" flexDirection="column" bg="white">
@@ -32,7 +35,7 @@ export default function Home() {
         <>
           {inventoryData && inventoryData.length > 0 ? (
             <FlatList
-              data={inventoryData && inventoryData}
+              data={inventoryData.filter((item) => !item.status)}
               renderItem={({ item }) => <FlatListInventario data={item} />}
               keyExtractor={(item) => item.id}
               refreshing={refreshing}
@@ -41,9 +44,18 @@ export default function Home() {
               }}
             />
           ) : (
-            <Box alignItems="center" mt="20">
-              <Text>No momento sem inventário</Text>
-            </Box>
+            <FlatList
+              data={[1]}
+              renderItem={() => (
+                <Box alignItems="center" mt="20">
+                  <Text>No momento sem inventário</Text>
+                </Box>
+              )}
+              refreshing={refreshing}
+              onRefresh={() => {
+                setRefreshing(true);
+              }}
+            />
           )}
         </>
       )}
