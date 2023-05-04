@@ -41,6 +41,7 @@ export default function Input({ route }: { route: ItemRouteProp }) {
   const [ativeInput, setAtiveInput] = useState(false);
   const [loading, setLoanding] = useState(false);
 
+  const [codigo, setCodigo] = useState("");
   const [descricao, setDescricao] = useState("");
   const [endereco, setEndereco] = useState("");
 
@@ -52,7 +53,14 @@ export default function Input({ route }: { route: ItemRouteProp }) {
         input2Ref.current.focus();
       }, 100);
     }
-  }, [ativeInput]);
+
+    if (dataItem.catItem !== "MOVEL") {
+      setAtiveInput(true);
+      setCodigo(dataItem.item);
+      setDescricao(dataItem.descricao);
+      setEndereco(dataItem.endereco);
+    }
+  }, [ativeInput, dataItem]);
 
   const handleInputChange = debounce((value) => {
     setLoanding(true);
@@ -112,7 +120,7 @@ export default function Input({ route }: { route: ItemRouteProp }) {
                   }}
                   onBlur={onBlur}
                   onChangeText={handleInputChange}
-                  value={value}
+                  value={codigo || value}
                 />
               )}
               name="codigo"
