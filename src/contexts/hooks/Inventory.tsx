@@ -8,17 +8,20 @@ import { useLoading } from "./Loading";
 
 interface InventoryContextData {
   inventoryData?: InventoryData[];
+  inventoryDataAll?: InventoryData[];
   findOneAddressData?: InventoryData;
   addressData?: AddressData[];
   enderecoItemData?: ItemData[];
   itemData?: ItemData;
-  updateDataTrue?: ItemData;
+  updateDataTrue: boolean;
+  allFirstSecondStatus: boolean;
   loadListInventoryData: () => Promise<void>;
   ListAddressInventoryData: (id: string) => Promise<void>;
   ListOneAddressData: (id: string) => Promise<void>;
   ListItemEnderecoData: (id: string, endereco: string) => Promise<void>;
   ListItemData: (idItem: string, idName: string) => Promise<void>;
   UpdateItemData: (id: string, data: UpdateData) => Promise<void>;
+  setUpdateDataTrue: (value: boolean) => void;
 }
 
 const InventoryContext = createContext<InventoryContextData>(
@@ -30,11 +33,14 @@ export const InventoryProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const { token } = useAuth();
   const [inventoryData, setInventoryData] = useState<InventoryData[]>();
+  const [inventoryDataAll, setInventoryDataAll] = useState<InventoryData[]>();
   const [addressData, setAddressData] = useState<AddressData[]>();
   const [findOneAddressData, setFindOneAddressData] = useState<InventoryData>();
   const [enderecoItemData, setEnderecoItemData] = useState<ItemData[]>();
   const [itemData, setItemData] = useState<ItemData>();
-  const [updateDataTrue, setUpdateDataTrue] = useState<ItemData>();
+  const [updateDataTrue, setUpdateDataTrue] = useState(false);
+  const [allFirstSecondStatus, setAllFirstSecondStatus] = useState(true);
+  const [countSecond, setCountSecond] = useState(false);
 
   const { setLoadingFetch } = useLoading();
 
@@ -53,8 +59,37 @@ export const InventoryProvider: React.FC<{ children: React.ReactNode }> = ({
         },
       });
 
-      setInventoryData(data);
+      if (data.length > 0) {
+        const allTrueFirst = data.every((obj) => obj.firstStatus === true);
+
+        if (!allTrueFirst) {
+          const newData = data.filter(
+            (inventory: InventoryData) => inventory.firstStatus === false
+          );
+          setAllFirstSecondStatus(false);
+          setCountSecond(false);
+          setInventoryData(newData);
+        } else {
+          const newData = data.filter(
+            (inventory: InventoryData) => inventory.secondStatus === false
+          );
+          if (newData.length > 0) {
+            setAllFirstSecondStatus(true);
+            setCountSecond(true);
+            setInventoryData(newData);
+          } else {
+            setCountSecond(false);
+            setInventoryData(null);
+          }
+        }
+      }
+      const newData = data.filter(
+        (inventory: InventoryData) =>
+          inventory.firstStatus === true && inventory.secondStatus === true
+      );
+      setInventoryDataAll(newData);
     }
+
     setLoadingFetch(false);
   }
 
@@ -69,17 +104,38 @@ export const InventoryProvider: React.FC<{ children: React.ReactNode }> = ({
         });
 
         if (data.length > 0) {
-          const allTrue = data.every((obj) => obj.status === true);
+          if (!countSecond) {
+            const allTrueFirst = data.every(
+              (obj: AddressData) => obj.firstStatus === true
+            );
+            if (!allTrueFirst) {
+              const newData = data.filter(
+                (address: AddressData) => address.firstStatus === false
+              );
+              setAddressData(newData);
+            } else {
+              navigate({
+                name: "Inicio",
+              });
+              await loadListInventoryData();
+            }
+          } else {
+            const newDataSecond = data.filter(
+              (address: AddressData) => address.secondStatus === false
+            );
 
-          if (allTrue) {
-            await loadListInventoryData();
-            navigate({
-              name: "Inicio",
-            });
+            if (newDataSecond.length > 0) {
+              setAddressData(newDataSecond);
+            } else {
+              navigate({
+                name: "Inicio",
+              });
+              await loadListInventoryData();
+            }
           }
         }
+
         setLoadingFetch(false);
-        setAddressData(data);
       } catch (error) {
         setLoadingFetch(false);
         setAddressData(null);
@@ -123,19 +179,45 @@ export const InventoryProvider: React.FC<{ children: React.ReactNode }> = ({
       );
 
       if (data.length > 0) {
-        const allTrue = data.every((obj) => obj.status === true);
+        if (!countSecond) {
+          const allTrueFirst = data.every(
+            (obj: ItemData) => obj.firstStatus === true
+          );
 
-        if (allTrue) {
-          navigate({
-            name: "Endereco",
-            params: {
-              id: id,
-            },
-          });
+          if (!allTrueFirst) {
+            const newData = data.filter(
+              (item: ItemData) => item.firstStatus === false
+            );
+
+            setEnderecoItemData(newData);
+          } else {
+            navigate({
+              name: "Endereco",
+              params: {
+                id: id,
+              },
+            });
+            await ListAddressInventoryData(id);
+          }
+        } else {
+          const newData = data.filter(
+            (item: ItemData) => item.secondStatus === false
+          );
+          if (newData.length > 0) {
+            setEnderecoItemData(newData);
+          } else {
+            navigate({
+              name: "Endereco",
+              params: {
+                id: id,
+              },
+            });
+            await ListAddressInventoryData(id);
+          }
         }
       }
+
       setLoadingFetch(false);
-      setEnderecoItemData(data);
     } catch (error) {
       setLoadingFetch(false);
       setEnderecoItemData(null);
@@ -181,7 +263,8 @@ export const InventoryProvider: React.FC<{ children: React.ReactNode }> = ({
           id: data.baseNameInventario_id,
         },
       });
-      setUpdateDataTrue(data);
+      await ListItemEnderecoData(data.baseNameInventario_id, data.endereco);
+      setUpdateDataTrue(true);
 
       setLoadingFetch(false);
       Toast.show({
@@ -205,6 +288,7 @@ export const InventoryProvider: React.FC<{ children: React.ReactNode }> = ({
     <InventoryContext.Provider
       value={{
         inventoryData,
+        inventoryDataAll,
         loadListInventoryData,
         addressData,
         ListAddressInventoryData,
@@ -216,6 +300,8 @@ export const InventoryProvider: React.FC<{ children: React.ReactNode }> = ({
         ListItemData,
         UpdateItemData,
         updateDataTrue,
+        allFirstSecondStatus,
+        setUpdateDataTrue,
       }}
     >
       {children}

@@ -19,6 +19,7 @@ export default function Endereco() {
     ListOneAddressData,
     findOneAddressData,
     updateDataTrue,
+    setUpdateDataTrue,
   } = inventoryContext();
 
   const { isLoadingFetch } = useLoading();
@@ -31,6 +32,7 @@ export default function Endereco() {
     const handleListAddres = async () => {
       ListAddressInventoryData(id);
       ListOneAddressData(id);
+      setUpdateDataTrue(false);
     };
     handleListAddres();
   }, [id, updateDataTrue]);
@@ -49,7 +51,7 @@ export default function Endereco() {
 
           {addressData && addressData.length > 0 ? (
             <FlatList
-              data={addressData.filter((item) => !item.status)}
+              data={addressData}
               renderItem={({ item }) => <FlatListEndereco data={item} />}
               keyExtractor={(address: AddressData) => address.id}
             />

@@ -10,9 +10,12 @@ import {
 
 import { AddressData } from "../../contexts/types";
 import { useNavigation } from "@react-navigation/native";
+import { inventoryContext } from "../../contexts/hooks/Inventory";
 
 export default function FlatListEndereco({ data }: { data: AddressData }) {
   const navigation = useNavigation();
+
+  const { allFirstSecondStatus } = inventoryContext();
 
   const handlePress = () => {
     navigation.navigate("Item", {
@@ -42,7 +45,7 @@ export default function FlatListEndereco({ data }: { data: AddressData }) {
           >
             <HStack w="100%" padding={4}>
               <Divider
-                bg="green.500"
+                bg={allFirstSecondStatus === true ? "red.500" : "green.500"}
                 thickness="6"
                 h="100"
                 orientation="vertical"

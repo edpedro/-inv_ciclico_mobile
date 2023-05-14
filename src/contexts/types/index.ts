@@ -2,7 +2,8 @@ export interface InventoryData {
   id: string;
   date: string;
   name: string;
-  status: string;
+  firstStatus: boolean;
+  secondStatus: boolean;
   user?: {
     name: string;
   };
@@ -12,7 +13,8 @@ export interface AddressData {
   id: string;
   endereco: string;
   item: string;
-  status: boolean;
+  firstStatus: boolean;
+  secondStatus: boolean;
   baseNameInventario_id?: string;
 }
 
@@ -24,8 +26,10 @@ export interface ItemData {
   tipoEstoque: string;
   catItem: string;
   saldoWms: number;
-  saldoFisico: number;
-  status: boolean;
+  firstCount: number;
+  secondCount: number;
+  firstStatus: boolean;
+  secondStatus: boolean;
   username_id: string;
   baseNameInventario_id: string;
 }
@@ -33,5 +37,4 @@ export interface ItemData {
 export interface UpdateData {
   id: number;
   saldoFisico: number;
-  status: boolean;
 }

@@ -14,8 +14,12 @@ interface RouteParams {
 }
 
 export default function Item() {
-  const { enderecoItemData, ListItemEnderecoData, updateDataTrue } =
-    inventoryContext();
+  const {
+    enderecoItemData,
+    ListItemEnderecoData,
+    updateDataTrue,
+    setUpdateDataTrue,
+  } = inventoryContext();
 
   const { isLoadingFetch } = useLoading();
 
@@ -27,6 +31,7 @@ export default function Item() {
     const handleListItem = async () => {
       if (endereco && id) {
         ListItemEnderecoData(id, endereco);
+        setUpdateDataTrue(false);
       }
     };
     handleListItem();
@@ -46,10 +51,7 @@ export default function Item() {
 
           {enderecoItemData && enderecoItemData.length > 0 ? (
             <FlatList
-              data={
-                enderecoItemData &&
-                enderecoItemData.filter((item) => !item.status)
-              }
+              data={enderecoItemData}
               renderItem={({ item }) => <FlatListItem data={item} />}
               keyExtractor={(item) => item.id}
             />

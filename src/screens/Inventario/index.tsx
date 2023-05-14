@@ -7,7 +7,7 @@ import { inventoryContext } from "../../contexts/hooks/Inventory";
 import { useLoading } from "../../contexts/hooks/Loading";
 
 export default function Inventario() {
-  const { inventoryData, loadListInventoryData } = inventoryContext();
+  const { inventoryDataAll, loadListInventoryData } = inventoryContext();
 
   const { isLoadingFetch } = useLoading();
 
@@ -30,9 +30,9 @@ export default function Inventario() {
         <Spinner />
       ) : (
         <>
-          {inventoryData && inventoryData.length > 0 ? (
+          {inventoryDataAll && inventoryDataAll.length > 0 ? (
             <FlatList
-              data={inventoryData.filter((item) => item.status)}
+              data={inventoryDataAll}
               renderItem={({ item }) => <FlatListAllInventario data={item} />}
               keyExtractor={(inventory: InventoryData) => inventory.id}
               refreshing={refreshing}

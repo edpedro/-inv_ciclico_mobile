@@ -16,9 +16,11 @@ import ptBR from "date-fns/locale/pt-BR";
 const user = require("../../assets/user.png");
 
 import { InventoryData } from "../../contexts/types";
+import { inventoryContext } from "../../contexts/hooks/Inventory";
 
 export default function FlatListInventario({ data }: { data: InventoryData }) {
   const navigation = useNavigation();
+  const { allFirstSecondStatus } = inventoryContext();
 
   const fusoHorario = "America/Sao_Paulo";
 
@@ -46,7 +48,11 @@ export default function FlatListInventario({ data }: { data: InventoryData }) {
             }}
           >
             <HStack w="100%" padding={4}>
-              <Divider bg="green.500" thickness="6" orientation="vertical" />
+              <Divider
+                bg={allFirstSecondStatus === true ? "red.500" : "green.500"}
+                thickness="6"
+                orientation="vertical"
+              />
               <Box w="100%" h={150} bg="white" rounded="md" shadow="3">
                 <VStack space={1} justifyContent="space-between">
                   <Heading
@@ -57,7 +63,9 @@ export default function FlatListInventario({ data }: { data: InventoryData }) {
                     mt="3"
                     ml="2"
                   >
-                    INICIAR INVENTÁRIO AGORA
+                    {allFirstSecondStatus
+                      ? "DIVERGÊNCIA"
+                      : "INICIAR INVENTÁRIO AGORA"}
                   </Heading>
                   <Text fontSize="sm" bold ml="2">
                     {format(utcToZonedTime(data.date, fusoHorario), "PPP", {
