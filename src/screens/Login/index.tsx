@@ -22,7 +22,7 @@ export default function Login() {
 
   function handleSubmit() {
     if (username && password) {
-      signIn(username, password);
+      signIn(username.trim(), password);
     } else {
       Toast.show({
         type: "error",

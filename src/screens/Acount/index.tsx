@@ -1,4 +1,4 @@
-import { Box, Button, Center } from "native-base";
+import { Box, Button, Center, Heading } from "native-base";
 import Header from "../../components/Header";
 import { Theme } from "../../themes";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -11,6 +11,9 @@ export default function Acount() {
     <Box flex={1} h="full" w="100%" flexDirection="column" bg="white">
       <Header />
       <Center w="100%" h="full">
+        <Heading pb="3" size="xl">
+          Sair
+        </Heading>
         <Button
           bg="tertiary.200"
           _text={{
