@@ -5,6 +5,7 @@ import { navigationRef } from "./stack/Navigate";
 import { useAuth } from "../contexts/hooks/Auth";
 import { useLoading } from "../contexts/hooks/Loading";
 import Spinner from "../components/Spinner";
+import Header from "../components/Header";
 
 export default function Routes() {
   const { authData } = useAuth();
@@ -16,7 +17,14 @@ export default function Routes() {
 
   return (
     <NavigationContainer ref={navigationRef}>
-      {authData ? <AppStack /> : <AuthStack />}
+      {authData ? (
+        <>
+          <Header />
+          <AppStack />
+        </>
+      ) : (
+        <AuthStack />
+      )}
     </NavigationContainer>
   );
 }

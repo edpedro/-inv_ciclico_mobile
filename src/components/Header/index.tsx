@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+
 import { Box, HStack, Avatar, Text } from "native-base";
 
 import { useAuth } from "../../contexts/hooks/Auth";
@@ -5,7 +7,11 @@ import { useAuth } from "../../contexts/hooks/Auth";
 const user = require("../../assets/user.png");
 
 export default function Header() {
-  const { authData } = useAuth();
+  const { authData, points, loadPoints } = useAuth();
+
+  useEffect(() => {
+    loadPoints();
+  }, []);
 
   return (
     <Box>
@@ -22,8 +28,9 @@ export default function Header() {
             {authData.name}
           </Text>
         </Box>
-        <Box>
-          <Text>{new Date().toLocaleDateString()}</Text>
+        <Box flexDirection="column" alignItems="center" mr={4}>
+          <Text>Pontos</Text>
+          <Text>{points?.totalPoints}</Text>
         </Box>
       </HStack>
     </Box>

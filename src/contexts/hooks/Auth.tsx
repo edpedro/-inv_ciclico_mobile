@@ -4,6 +4,7 @@ import api from "../../services/api";
 
 import Toast from "react-native-toast-message";
 import { useLoading } from "./Loading";
+import { UIpoints } from "../types";
 
 interface AuthData {
   username: string;
@@ -17,9 +18,11 @@ interface UItoken {
 interface AuthContextData {
   authData?: AuthData;
   token: UItoken;
+  points?: UIpoints;
   signIn: (username: string, password: string) => Promise<void>;
   register: (name: string, username: string, password: string) => Promise<void>;
   signOut: () => Promise<void>;
+  loadPoints: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
@@ -29,6 +32,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [authData, setAuthData] = useState<AuthData>();
   const [token, setToken] = useState<UItoken>();
+  const [points, setPoints] = useState<UIpoints>();
 
   const { setLoading, setLoadingButton } = useLoading();
 
@@ -54,6 +58,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     } finally {
       setLoading(false);
     }
+  }
+
+  async function loadPoints(): Promise<void> {
+    const { data } = await api.get("points", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    setPoints(data);
   }
 
   async function signIn(username: string, password: string) {
@@ -126,6 +140,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         signOut,
         register,
         token,
+        loadPoints,
+        points,
       }}
     >
       {children}

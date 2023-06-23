@@ -29,7 +29,6 @@ export default function Home() {
 
   return (
     <Box flex={1} h="full" w="100%" flexDirection="column" bg="white">
-      <Header />
       <Heading p="4" pb="3" size="xl">
         Inventarios
       </Heading>

@@ -9,7 +9,6 @@ export default function Acount() {
 
   return (
     <Box flex={1} h="full" w="100%" flexDirection="column" bg="white">
-      <Header />
       <Center w="100%" h="full">
         <Heading pb="3" size="xl">
           Sair

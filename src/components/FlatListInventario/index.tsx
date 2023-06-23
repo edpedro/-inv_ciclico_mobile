@@ -85,7 +85,7 @@ export default function FlatListInventario({ data }: { data: InventoryData }) {
                     <Text fontSize="md" bold>
                       {data.name}
                     </Text>
-                    <Text fontSize="sm">{data.user.name} - Criador</Text>
+                    <Text fontSize="sm">{data.user.name} - Admin</Text>
                   </VStack>
                 </HStack>
               </Box>

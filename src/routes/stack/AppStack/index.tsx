@@ -9,7 +9,7 @@ const { Navigator, Screen } = createNativeStackNavigator();
 
 export default function AppStack() {
   return (
-    <Navigator initialRouteName="Inicio">
+    <Navigator>
       <Screen
         options={{ headerShown: false }}
         name="Inicio"

@@ -38,3 +38,9 @@ export interface UpdateData {
   id: number;
   saldoFisico: number;
 }
+
+export interface UIpoints {
+  totalAcertos: number;
+  totalSegundaContagem: number;
+  totalPoints: number;
+}
