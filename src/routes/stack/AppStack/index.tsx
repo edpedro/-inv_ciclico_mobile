@@ -11,14 +11,22 @@ export default function AppStack() {
   return (
     <Navigator>
       <Screen
-        options={{ headerShown: false }}
+        options={{ headerShown: false, animation: "none" }}
         name="Inicio"
         component={MenuTabs}
       />
-      <Screen options={{ headerShown: false }} name="Input" component={Input} />
-      <Screen options={{ headerShown: false }} name="Item" component={Item} />
       <Screen
-        options={{ headerShown: false }}
+        options={{ headerShown: false, animation: "none" }}
+        name="Input"
+        component={Input}
+      />
+      <Screen
+        options={{ headerShown: false, animation: "none" }}
+        name="Item"
+        component={Item}
+      />
+      <Screen
+        options={{ headerShown: false, animation: "none" }}
         name="Endereco"
         component={Endereco}
       />

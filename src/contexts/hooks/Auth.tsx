@@ -60,19 +60,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   }
 
-  async function loadPoints(): Promise<void> {
-    const { data } = await api.get("points", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    setPoints(data);
-  }
-
   async function signIn(username: string, password: string) {
     try {
       setLoadingButton(true);
+
       const {
         data: { payload, token },
       } = await api.post("/auth/login", {
@@ -86,7 +77,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       AsyncStorage.setItem("@Token", JSON.stringify(token));
 
       setLoadingButton(false);
-
       Toast.show({
         type: "success",
         text1: "Acesso",
@@ -127,9 +117,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   }
 
+  async function loadPoints(): Promise<void> {
+    const { data } = await api.get("/points", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    setPoints(data);
+  }
+
   async function signOut() {
     setAuthData(undefined);
     AsyncStorage.removeItem("@AuthData");
+    AsyncStorage.removeItem("@Token");
+    setPoints(undefined);
   }
 
   return (

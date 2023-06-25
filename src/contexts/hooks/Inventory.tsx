@@ -31,7 +31,7 @@ const InventoryContext = createContext<InventoryContextData>(
 export const InventoryProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const { token } = useAuth();
+  const { token, loadPoints } = useAuth();
   const [inventoryData, setInventoryData] = useState<InventoryData[]>();
   const [inventoryDataAll, setInventoryDataAll] = useState<InventoryData[]>();
   const [addressData, setAddressData] = useState<AddressData[]>();
@@ -48,6 +48,7 @@ export const InventoryProvider: React.FC<{ children: React.ReactNode }> = ({
     if (token) {
       loadListInventoryData();
     }
+    loadPoints();
   }, [token]);
 
   async function loadListInventoryData(): Promise<void> {
@@ -265,6 +266,8 @@ export const InventoryProvider: React.FC<{ children: React.ReactNode }> = ({
       });
       await ListItemEnderecoData(data.baseNameInventario_id, data.endereco);
       setUpdateDataTrue(true);
+
+      loadPoints();
 
       setLoadingFetch(false);
       Toast.show({
