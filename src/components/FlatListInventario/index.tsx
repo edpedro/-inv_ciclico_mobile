@@ -38,7 +38,7 @@ export default function FlatListInventario({ data }: { data: InventoryData }) {
             }}
             borderColor="muted.800"
             pl={["0", "4"]}
-            pr={["0", "5"]}
+            pr={["1", "4"]}
             style={{
               transform: [
                 {

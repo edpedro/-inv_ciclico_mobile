@@ -3,7 +3,6 @@ import { TextInput } from "react-native";
 import {
   Center,
   Box,
-  VStack,
   FormControl,
   Button,
   Text,
@@ -96,131 +95,126 @@ export default function Input({ route }: { route: ItemRouteProp }) {
   };
 
   return (
-    <Center w="100%" h="full" bgColor="white">
-      <Box safeArea p="2" py="1" w="100%" maxW="350">
-        <Text textAlign="center" bold>
-          Informações
-        </Text>
-        <VStack space={3} mt="5">
-          <FormControl>
-            <FormControl.Label
-              _text={{
-                color: "black",
-              }}
-            >
-              Código
-            </FormControl.Label>
-            <Controller
-              control={control}
-              render={({ field: { onBlur, value } }) => (
-                <InputNative
-                  bg="gray.200"
-                  _focus={{
-                    bg: "gray.100",
-                  }}
-                  onBlur={onBlur}
-                  onChangeText={handleInputChange}
-                  value={codigo || value}
-                />
-              )}
-              name="codigo"
-            />
-          </FormControl>
-          {loading ? (
-            <Spinner />
-          ) : (
-            ativeInput && (
-              <>
-                <FormControl>
-                  <FormControl.Label
-                    _text={{
-                      color: "black",
-                    }}
-                  >
-                    Descrição
-                  </FormControl.Label>
-                  <InputNative
-                    bg="gray.200"
-                    isReadOnly={true}
-                    value={descricao}
-                    onChangeText={(descricao) => setDescricao(descricao)}
-                  />
-                </FormControl>
-                <FormControl>
-                  <FormControl.Label
-                    _text={{
-                      color: "black",
-                    }}
-                  >
-                    Endereço
-                  </FormControl.Label>
-                  <InputNative
-                    bg="gray.200"
-                    isReadOnly={true}
-                    value={endereco}
-                    onChangeText={(endereco) => setEndereco(endereco)}
-                  />
-                </FormControl>
-                <FormControl>
-                  <FormControl.Label
-                    _text={{
-                      color: "black",
-                    }}
-                  >
-                    Saldo
-                  </FormControl.Label>
-                  <Controller
-                    control={control}
-                    render={({ field: { onChange, onBlur, value } }) => (
-                      <InputNative
-                        keyboardType="numeric"
-                        bg="gray.200"
-                        _focus={{
-                          bg: "gray.100",
-                        }}
-                        onBlur={onBlur}
-                        onChangeText={onChange}
-                        value={value}
-                        ref={input2Ref}
-                      />
-                    )}
-                    name="saldoFisico"
-                  />
-                </FormControl>
-                <Button
-                  mt="6"
-                  h="12"
-                  bg="tertiary.200"
+    <Center w="100%" h="100%" bgColor="white">
+      <Box p="4" w="100%" h="80%">
+        <FormControl>
+          <FormControl.Label
+            _text={{
+              color: "black",
+            }}
+          >
+            Código
+          </FormControl.Label>
+          <Controller
+            control={control}
+            render={({ field: { onBlur, value } }) => (
+              <InputNative
+                bg="gray.200"
+                _focus={{
+                  bg: "gray.100",
+                }}
+                onBlur={onBlur}
+                onChangeText={handleInputChange}
+                value={codigo || value}
+              />
+            )}
+            name="codigo"
+          />
+        </FormControl>
+        {loading ? (
+          <Spinner />
+        ) : (
+          ativeInput && (
+            <>
+              <FormControl>
+                <FormControl.Label
                   _text={{
                     color: "black",
                   }}
-                  _pressed={{
-                    bg: "tertiary.100",
-                  }}
-                  onPress={handleSubmit(onSubmit)}
-                  isLoading={isLoadingFetch}
-                  _loading={{
-                    _text: {
-                      color: "black",
-                    },
-                  }}
-                  _spinner={{
+                >
+                  Descrição
+                </FormControl.Label>
+                <InputNative
+                  bg="gray.200"
+                  isReadOnly={true}
+                  value={descricao}
+                  onChangeText={(descricao) => setDescricao(descricao)}
+                />
+              </FormControl>
+              <FormControl>
+                <FormControl.Label
+                  _text={{
                     color: "black",
                   }}
-                  isLoadingText="Atualizado..."
-                  leftIcon={
-                    <Icon
-                      as={AntDesign}
-                      name="checkcircleo"
-                      size="md"
-                      color="black"
+                >
+                  Endereço
+                </FormControl.Label>
+                <InputNative
+                  bg="gray.200"
+                  isReadOnly={true}
+                  value={endereco}
+                  onChangeText={(endereco) => setEndereco(endereco)}
+                />
+              </FormControl>
+              <FormControl>
+                <FormControl.Label
+                  _text={{
+                    color: "black",
+                  }}
+                >
+                  Saldo
+                </FormControl.Label>
+                <Controller
+                  control={control}
+                  render={({ field: { onChange, onBlur, value } }) => (
+                    <InputNative
+                      keyboardType="numeric"
+                      bg="gray.200"
+                      _focus={{
+                        bg: "gray.100",
+                      }}
+                      onBlur={onBlur}
+                      onChangeText={onChange}
+                      value={value}
+                      ref={input2Ref}
                     />
-                  }
-                ></Button>
-              </>
-            )
-          )}
-        </VStack>
+                  )}
+                  name="saldoFisico"
+                />
+              </FormControl>
+              <Button
+                mt="6"
+                h="12"
+                bg="tertiary.200"
+                _text={{
+                  color: "black",
+                }}
+                _pressed={{
+                  bg: "tertiary.100",
+                }}
+                onPress={handleSubmit(onSubmit)}
+                isLoading={isLoadingFetch}
+                _loading={{
+                  _text: {
+                    color: "black",
+                  },
+                }}
+                _spinner={{
+                  color: "black",
+                }}
+                isLoadingText="Atualizado..."
+                leftIcon={
+                  <Icon
+                    as={AntDesign}
+                    name="checkcircleo"
+                    size="md"
+                    color="black"
+                  />
+                }
+              ></Button>
+            </>
+          )
+        )}
       </Box>
     </Center>
   );

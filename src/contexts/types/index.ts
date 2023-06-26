@@ -37,6 +37,7 @@ export interface ItemData {
 export interface UpdateData {
   id: number;
   saldoFisico: number;
+  status?: boolean;
 }
 
 export interface UIpoints {
