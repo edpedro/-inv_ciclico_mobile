@@ -1,9 +1,20 @@
-import { Box, HStack, Heading, VStack, Text, Pressable } from "native-base";
+import {
+  Box,
+  HStack,
+  Heading,
+  VStack,
+  Text,
+  Pressable,
+  Divider,
+} from "native-base";
 
 import { ItemData } from "../../contexts/types";
 import { useNavigation } from "@react-navigation/native";
+import { inventoryContext } from "../../contexts/hooks/Inventory";
 
 export default function FlatListItem({ data }: { data: ItemData }) {
+  const { allFirstSecondStatus } = inventoryContext();
+
   const navigation = useNavigation();
 
   const handlePress = () => {

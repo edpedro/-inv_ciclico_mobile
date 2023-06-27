@@ -47,8 +47,8 @@ export const InventoryProvider: React.FC<{ children: React.ReactNode }> = ({
   useEffect(() => {
     if (token) {
       loadListInventoryData();
+      loadPoints();
     }
-    loadPoints();
   }, [token]);
 
   async function loadListInventoryData(): Promise<void> {

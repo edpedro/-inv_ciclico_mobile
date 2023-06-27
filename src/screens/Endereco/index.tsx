@@ -47,7 +47,7 @@ export default function Endereco() {
             {findOneAddressData && findOneAddressData.name}
           </Heading>
 
-          {addressData && addressData.length > 0 ? (
+          {addressData && addressData.length !== null ? (
             <FlatList
               data={addressData}
               renderItem={({ item }) => <FlatListEndereco data={item} />}

@@ -47,20 +47,20 @@ export default function FlatListInventario({ data }: { data: InventoryData }) {
               ],
             }}
           >
-            <HStack w="100%" padding={4}>
+            <HStack w="100%" padding={3}>
               <Divider
                 bg={allFirstSecondStatus === true ? "red.500" : "green.500"}
                 thickness="6"
                 orientation="vertical"
+                rounded="md"
               />
-              <Box w="100%" h={150} bg="white" rounded="md" shadow="3">
+              <Box w="100%" h={130} bg="white" rounded="md" shadow="3">
                 <VStack space={1} justifyContent="space-between">
                   <Heading
                     size="xs"
                     fontWeight="300"
                     color="gray.700"
-                    m="1"
-                    mt="3"
+                    mt="2"
                     ml="2"
                   >
                     {allFirstSecondStatus
@@ -74,7 +74,7 @@ export default function FlatListInventario({ data }: { data: InventoryData }) {
                   </Text>
                 </VStack>
                 <Divider
-                  my="2"
+                  my="1"
                   _light={{
                     bg: "gray.100",
                   }}

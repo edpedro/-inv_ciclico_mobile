@@ -47,17 +47,18 @@ export default function FlatListEndereco({ data }: { data: AddressData }) {
               <Divider
                 bg={allFirstSecondStatus === true ? "red.500" : "green.500"}
                 thickness="6"
-                h="100"
+                h="90"
                 orientation="vertical"
+                rounded="md"
               />
-              <Box w="95%" h={100} bg="white" rounded="md" shadow="3">
+              <Box w="95%" h={90} bg="white" rounded="md" shadow="3">
                 <VStack
                   space={1}
                   flexDirection="row"
                   justifyContent="space-between"
                 >
                   <Heading
-                    size="lg"
+                    size="md"
                     fontWeight="300"
                     color="gray.500"
                     ml="4"
@@ -67,16 +68,23 @@ export default function FlatListEndereco({ data }: { data: AddressData }) {
                     ENDEREÇO
                   </Heading>
                   <Heading
-                    size="sm"
+                    size="xs"
                     fontWeight="300"
                     color="gray.700"
                     mt="3"
                     mr="5"
                   >
-                    SKU -{" "}
-                    <Text fontSize="xs" bold>
+                    SKU{" "}
+                    <Heading
+                      size="xs"
+                      fontWeight="300"
+                      color="gray.700"
+                      mt="3"
+                      mr="5"
+                      bold
+                    >
                       {data.item}
-                    </Text>
+                    </Heading>
                   </Heading>
                 </VStack>
                 <Divider
