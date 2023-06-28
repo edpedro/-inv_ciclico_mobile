@@ -95,8 +95,8 @@ export default function Input({ route }: { route: ItemRouteProp }) {
   };
 
   return (
-    <Center w="100%" h="100%" bgColor="white">
-      <Box p="4" w="100%" h="80%">
+    <Center w="100%" bgColor="white" mt="-40">
+      <Box alignItems="center" justifyContent="center" p="4" w="100%" h="100%">
         <FormControl>
           <FormControl.Label
             _text={{
@@ -186,6 +186,7 @@ export default function Input({ route }: { route: ItemRouteProp }) {
                 mt="6"
                 h="12"
                 bg="tertiary.200"
+                w="100%"
                 _text={{
                   color: "black",
                 }}

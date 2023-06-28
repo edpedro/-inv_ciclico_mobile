@@ -154,8 +154,8 @@ export const InventoryProvider: React.FC<{ children: React.ReactNode }> = ({
             Authorization: `Bearer ${token}`,
           },
         });
-        setLoadingFetch(false);
         setFindOneAddressData(data);
+        setLoadingFetch(false);
       } catch (error) {
         setLoadingFetch(false);
         setFindOneAddressData(null);

@@ -7,7 +7,7 @@ export default function Header() {
   const { authData, points } = useAuth();
 
   return (
-    <Box>
+    <Box bgColor="white">
       <HStack
         padding={4}
         w="100%"

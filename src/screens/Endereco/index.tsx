@@ -47,17 +47,13 @@ export default function Endereco() {
             {findOneAddressData && findOneAddressData.name}
           </Heading>
 
-          {addressData && addressData.length !== null ? (
+          {addressData && addressData.length > 0 ? (
             <FlatList
               data={addressData}
               renderItem={({ item }) => <FlatListEndereco data={item} />}
               keyExtractor={(address: AddressData) => address.id}
             />
-          ) : (
-            <Box alignItems="center" mt="20">
-              <Text>Falta finalizar o processo</Text>
-            </Box>
-          )}
+          ) : null}
         </>
       )}
     </Box>
