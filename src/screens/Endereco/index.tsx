@@ -1,18 +1,34 @@
-import { Box, FlatList, Heading, Text } from "native-base";
-import FlatListEndereco from "../../components/FlatListEndereco";
-import Header from "../../components/Header";
-import { useRoute } from "@react-navigation/native";
+import { Box, FlatList, Heading } from "native-base";
+import FlatListEnderecoCiclico from "../../components/FlatListEnderecoCiclico";
 import { inventoryContext } from "../../contexts/hooks/Inventory";
 import { useEffect } from "react";
 import { AddressData } from "../../contexts/types";
 import { useLoading } from "../../contexts/hooks/Loading";
 import Spinner from "../../components/Spinner";
+import FlatListEnderecoGeral from "../../components/FlatListEnderecoGeral";
+import { RouteProp } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
-interface RouteParams {
-  id: string;
-}
+type StackParamList = {
+  Endereco: {
+    id: string;
+    type: string;
+  };
+};
 
-export default function Endereco() {
+type EnderecoScreenRouteProp = RouteProp<StackParamList, "Endereco">;
+
+type EnderecoScreenNavigationProp = NativeStackNavigationProp<
+  StackParamList,
+  "Endereco"
+>;
+
+type Props = {
+  route: EnderecoScreenRouteProp;
+  navigation: EnderecoScreenNavigationProp;
+};
+
+export default function Endereco({ route, navigation }: Props) {
   const {
     ListAddressInventoryData,
     addressData,
@@ -20,25 +36,25 @@ export default function Endereco() {
     findOneAddressData,
     updateDataTrue,
     setUpdateDataTrue,
+    ListCiclicoInventoryData,
   } = inventoryContext();
 
   const { isLoadingFetch } = useLoading();
 
-  const route = useRoute();
-
-  const { id } = route.params as RouteParams;
+  const { id, type } = route.params;
 
   useEffect(() => {
-    const handleListAddres = async () => {
+    if (type === "geral") {
+      ListCiclicoInventoryData(id);
+    } else {
       ListAddressInventoryData(id);
-      ListOneAddressData(id);
-      setUpdateDataTrue(false);
-    };
-    handleListAddres();
-  }, [id, updateDataTrue]);
+    }
+    ListOneAddressData(id);
+    setUpdateDataTrue(false);
+  }, [id, updateDataTrue, type]);
 
   return (
-    <Box flex={1} h="full" w="100%" flexDirection="column" bg="white">
+    <Box flex={1} flexDirection="column" bg="white">
       {isLoadingFetch ? (
         <Spinner />
       ) : (
@@ -48,11 +64,17 @@ export default function Endereco() {
           </Heading>
 
           {addressData && addressData.length > 0 ? (
-            <FlatList
-              data={addressData}
-              renderItem={({ item }) => <FlatListEndereco data={item} />}
-              keyExtractor={(address: AddressData) => address.id}
-            />
+            type === "geral" ? (
+              <FlatListEnderecoGeral />
+            ) : (
+              <FlatList
+                data={addressData}
+                renderItem={({ item }) => {
+                  return <FlatListEnderecoCiclico data={item} />;
+                }}
+                keyExtractor={(address: AddressData) => address.id}
+              />
+            )
           ) : null}
         </>
       )}

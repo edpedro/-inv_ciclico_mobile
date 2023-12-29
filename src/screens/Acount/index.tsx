@@ -13,7 +13,10 @@ export default function Acount() {
           Sistema de Pontos
         </Heading>
         <Text>
-          Total de acertos: <Text bold>{points.totalAcertos}</Text>
+          Soma Total: <Text bold>{points.somaTotal}</Text>
+        </Text>
+        <Text>
+          Total de acertos: <Text bold>{points.totalPrimeiraContagem}</Text>
         </Text>
         <Text>
           Total de erros:

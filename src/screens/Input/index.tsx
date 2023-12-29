@@ -5,7 +5,6 @@ import {
   Box,
   FormControl,
   Button,
-  Text,
   Input as InputNative,
   Icon,
 } from "native-base";
@@ -35,31 +34,33 @@ export default function Input({ route }: { route: ItemRouteProp }) {
 
   const { isLoadingFetch } = useLoading();
 
-  const input2Ref = useRef<TextInput>(null);
+  const input2RefCodigo = useRef<TextInput>(null);
+  const input2RefSaldo = useRef<TextInput>(null);
 
   const [ativeInput, setAtiveInput] = useState(false);
   const [loading, setLoanding] = useState(false);
 
-  const [codigo, setCodigo] = useState("");
+  const [saldo, setSaldo] = useState(false);
   const [descricao, setDescricao] = useState("");
   const [endereco, setEndereco] = useState("");
 
   const dataItem = route.params.dataItem;
 
   useEffect(() => {
-    if (ativeInput) {
-      setTimeout(() => {
-        input2Ref.current.focus();
-      }, 100);
+    if (input2RefCodigo.current && !saldo) {
+      input2RefCodigo.current.focus();
+    }
+
+    if (input2RefSaldo.current && saldo) {
+      input2RefSaldo.current.focus();
     }
 
     if (dataItem.catItem !== "MOVEL") {
       setAtiveInput(true);
-      setCodigo(dataItem.item);
       setDescricao(dataItem.descricao);
       setEndereco(dataItem.endereco);
     }
-  }, [ativeInput, dataItem]);
+  }, [ativeInput, dataItem, saldo]);
 
   const handleInputChange = debounce((value) => {
     setLoanding(true);
@@ -83,8 +84,8 @@ export default function Input({ route }: { route: ItemRouteProp }) {
         saldoFisico: Number(value.saldoFisico),
         status: true,
       };
-
-      UpdateItemData(dataItem.baseNameInventario_id, data);
+      const type = "ciclico";
+      UpdateItemData(dataItem.baseNameInventario_id, type, data);
     } else {
       Toast.show({
         type: "error",
@@ -109,13 +110,14 @@ export default function Input({ route }: { route: ItemRouteProp }) {
             control={control}
             render={({ field: { onBlur, value } }) => (
               <InputNative
+                ref={input2RefCodigo}
                 bg="gray.200"
                 _focus={{
                   bg: "gray.100",
                 }}
                 onBlur={onBlur}
                 onChangeText={handleInputChange}
-                value={codigo || value}
+                value={value}
               />
             )}
             name="codigo"
@@ -168,6 +170,7 @@ export default function Input({ route }: { route: ItemRouteProp }) {
                   control={control}
                   render={({ field: { onChange, onBlur, value } }) => (
                     <InputNative
+                      ref={input2RefSaldo}
                       keyboardType="numeric"
                       bg="gray.200"
                       _focus={{
@@ -176,7 +179,7 @@ export default function Input({ route }: { route: ItemRouteProp }) {
                       onBlur={onBlur}
                       onChangeText={onChange}
                       value={value}
-                      ref={input2Ref}
+                      onLayout={() => setSaldo(true)}
                     />
                   )}
                   name="saldoFisico"

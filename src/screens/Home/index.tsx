@@ -6,12 +6,8 @@ import { inventoryContext } from "../../contexts/hooks/Inventory";
 import { useLoading } from "../../contexts/hooks/Loading";
 
 export default function Home() {
-  const {
-    inventoryData,
-    loadListInventoryData,
-    updateDataTrue,
-    allFirstSecondStatus,
-  } = inventoryContext();
+  const { inventoryData, loadListInventoryData, updateDataTrue } =
+    inventoryContext();
 
   const { isLoadingFetch } = useLoading();
 

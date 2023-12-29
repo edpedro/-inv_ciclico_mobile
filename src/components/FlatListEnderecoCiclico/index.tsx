@@ -12,7 +12,11 @@ import { AddressData } from "../../contexts/types";
 import { useNavigation } from "@react-navigation/native";
 import { inventoryContext } from "../../contexts/hooks/Inventory";
 
-export default function FlatListEndereco({ data }: { data: AddressData }) {
+export default function FlatListEnderecoCiclico({
+  data,
+}: {
+  data: AddressData;
+}) {
   const navigation = useNavigation();
 
   const { allFirstSecondStatus } = inventoryContext();

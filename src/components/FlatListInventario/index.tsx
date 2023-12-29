@@ -17,15 +17,15 @@ const user = require("../../assets/user.png");
 
 import { InventoryData } from "../../contexts/types";
 import { inventoryContext } from "../../contexts/hooks/Inventory";
+import { navigate } from "../../routes/stack/Navigate";
 
 export default function FlatListInventario({ data }: { data: InventoryData }) {
-  const navigation = useNavigation();
   const { allFirstSecondStatus } = inventoryContext();
 
   const fusoHorario = "America/Sao_Paulo";
 
   const handlePress = () => {
-    navigation.navigate("Endereco", { id: data.id });
+    navigate({ name: "Endereco", params: { id: data.id, type: data.type } });
   };
 
   return (

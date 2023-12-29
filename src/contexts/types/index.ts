@@ -2,6 +2,7 @@ export interface InventoryData {
   id: string;
   date: string;
   name: string;
+  type: string;
   firstStatus: boolean;
   secondStatus: boolean;
   user?: {
@@ -19,7 +20,7 @@ export interface AddressData {
 }
 
 export interface ItemData {
-  id: string;
+  id: number;
   item: string;
   descricao: string;
   endereco: string;
@@ -41,7 +42,8 @@ export interface UpdateData {
 }
 
 export interface UIpoints {
-  totalAcertos: number;
+  somaTotal: number;
+  totalPrimeiraContagem: number;
   totalSegundaContagem: number;
   totalPoints: number;
 }

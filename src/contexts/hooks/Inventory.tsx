@@ -15,13 +15,15 @@ interface InventoryContextData {
   itemData?: ItemData;
   updateDataTrue: boolean;
   allFirstSecondStatus: boolean;
+  ciclicoData?: ItemData[];
   loadListInventoryData: () => Promise<void>;
   ListAddressInventoryData: (id: string) => Promise<void>;
   ListOneAddressData: (id: string) => Promise<void>;
   ListItemEnderecoData: (id: string, endereco: string) => Promise<void>;
   ListItemData: (idItem: string, idName: string) => Promise<void>;
-  UpdateItemData: (id: string, data: UpdateData) => Promise<void>;
+  UpdateItemData: (id: string, type: string, data: UpdateData) => Promise<void>;
   setUpdateDataTrue: (value: boolean) => void;
+  ListCiclicoInventoryData: (id: string) => Promise<void>;
 }
 
 const InventoryContext = createContext<InventoryContextData>(
@@ -41,6 +43,7 @@ export const InventoryProvider: React.FC<{ children: React.ReactNode }> = ({
   const [updateDataTrue, setUpdateDataTrue] = useState(false);
   const [allFirstSecondStatus, setAllFirstSecondStatus] = useState(true);
   const [countSecond, setCountSecond] = useState(false);
+  const [ciclicoData, setCiclicoData] = useState<ItemData[]>();
 
   const { setLoadingFetch } = useLoading();
 
@@ -247,6 +250,7 @@ export const InventoryProvider: React.FC<{ children: React.ReactNode }> = ({
 
   async function UpdateItemData(
     id: string,
+    type: string,
     dataItem: UpdateData
   ): Promise<void> {
     try {
@@ -257,24 +261,36 @@ export const InventoryProvider: React.FC<{ children: React.ReactNode }> = ({
         },
       });
 
-      navigate({
-        name: "Item",
-        params: {
-          endereco: data.endereco,
-          id: data.baseNameInventario_id,
-        },
-      });
-      await ListItemEnderecoData(data.baseNameInventario_id, data.endereco);
+      if (type === "geral") {
+        navigate({
+          name: "Endereco",
+          params: {
+            id: data.baseNameInventario_id,
+            type: type,
+          },
+        });
+      } else {
+        navigate({
+          name: "Item",
+          params: {
+            endereco: data.endereco,
+            id: data.baseNameInventario_id,
+          },
+        });
+
+        await ListItemEnderecoData(data.baseNameInventario_id, data.endereco);
+      }
+
       setUpdateDataTrue(true);
 
       loadPoints();
 
-      setLoadingFetch(false);
       Toast.show({
         type: "success",
         text1: "Status",
         text2: "Atualizado com sucesso",
       });
+      setLoadingFetch(false);
     } catch (error) {
       setLoadingFetch(false);
       Toast.show({
@@ -284,6 +300,57 @@ export const InventoryProvider: React.FC<{ children: React.ReactNode }> = ({
       });
 
       console.log(error);
+    }
+  }
+
+  async function ListCiclicoInventoryData(id: string): Promise<void> {
+    if (id) {
+      try {
+        setLoadingFetch(true);
+        const { data } = await api.get(`/ciclico/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (data.length > 0) {
+          if (!countSecond) {
+            const allTrueFirst = data.every(
+              (obj: AddressData) => obj.firstStatus === true
+            );
+            if (!allTrueFirst) {
+              const newData = data.filter(
+                (address: AddressData) => address.firstStatus === false
+              );
+              setCiclicoData(newData);
+            } else {
+              navigate({
+                name: "Inicio",
+              });
+              await loadListInventoryData();
+            }
+          } else {
+            const newDataSecond = data.filter(
+              (address: AddressData) => address.secondStatus === false
+            );
+
+            if (newDataSecond.length > 0) {
+              setCiclicoData(newDataSecond);
+            } else {
+              navigate({
+                name: "Inicio",
+              });
+              await loadListInventoryData();
+            }
+          }
+        }
+
+        setLoadingFetch(false);
+      } catch (error) {
+        setLoadingFetch(false);
+        setAddressData(null);
+        console.log(error);
+      }
     }
   }
 
@@ -305,6 +372,8 @@ export const InventoryProvider: React.FC<{ children: React.ReactNode }> = ({
         updateDataTrue,
         allFirstSecondStatus,
         setUpdateDataTrue,
+        ciclicoData,
+        ListCiclicoInventoryData,
       }}
     >
       {children}
