@@ -98,72 +98,69 @@ export const InventoryProvider: React.FC<{ children: React.ReactNode }> = ({
   }
 
   async function ListAddressInventoryData(id: string): Promise<void> {
-    if (id) {
-      try {
-        setLoadingFetch(true);
-        const { data } = await api.get(`/ciclico/endereco/${id}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+    try {
+      setLoadingFetch(true);
+      const { data } = await api.get(`/ciclico/endereco/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-        if (data.length > 0) {
-          if (!countSecond) {
-            const allTrueFirst = data.every(
-              (obj: AddressData) => obj.firstStatus === true
+      if (data.length > 0) {
+        if (!countSecond) {
+          const allTrueFirst = data.every(
+            (obj: AddressData) => obj.firstStatus === true
+          );
+          if (!allTrueFirst) {
+            const newData = data.filter(
+              (address: AddressData) => address.firstStatus === false
             );
-            if (!allTrueFirst) {
-              const newData = data.filter(
-                (address: AddressData) => address.firstStatus === false
-              );
-              setAddressData(newData);
-            } else {
-              navigate({
-                name: "Inicio",
-              });
-              await loadListInventoryData();
-            }
+            setAddressData(newData);
           } else {
-            const newDataSecond = data.filter(
-              (address: AddressData) => address.secondStatus === false
-            );
+            navigate({
+              name: "Inicio",
+            });
+            await loadListInventoryData();
+          }
+        } else {
+          const newDataSecond = data.filter(
+            (address: AddressData) => address.secondStatus === false
+          );
 
-            if (newDataSecond.length > 0) {
-              setAddressData(newDataSecond);
-            } else {
-              navigate({
-                name: "Inicio",
-              });
-              await loadListInventoryData();
-            }
+          if (newDataSecond.length > 0) {
+            setAddressData(newDataSecond);
+          } else {
+            navigate({
+              name: "Inicio",
+            });
+            await loadListInventoryData();
           }
         }
-
-        setLoadingFetch(false);
-      } catch (error) {
-        setLoadingFetch(false);
-        setAddressData(null);
-        console.log(error);
       }
+
+      setLoadingFetch(false);
+    } catch (error) {
+      setLoadingFetch(false);
+      setAddressData(null);
+      console.log(error);
     }
   }
 
   async function ListOneAddressData(id: string): Promise<void> {
-    if (id) {
-      try {
-        setLoadingFetch(true);
-        const { data } = await api.get(`/nameinv/${id}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        setFindOneAddressData(data);
-        setLoadingFetch(false);
-      } catch (error) {
-        setLoadingFetch(false);
-        setFindOneAddressData(null);
-        console.log(error);
-      }
+    try {
+      setLoadingFetch(true);
+      const { data } = await api.get(`/nameinv/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      setFindOneAddressData(data);
+      setLoadingFetch(false);
+    } catch (error) {
+      setLoadingFetch(false);
+      setFindOneAddressData(null);
+      console.log(error);
     }
   }
 
@@ -304,53 +301,51 @@ export const InventoryProvider: React.FC<{ children: React.ReactNode }> = ({
   }
 
   async function ListCiclicoInventoryData(id: string): Promise<void> {
-    if (id) {
-      try {
-        setLoadingFetch(true);
-        const { data } = await api.get(`/ciclico/${id}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+    try {
+      setLoadingFetch(true);
+      const { data } = await api.get(`/ciclico/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-        if (data.length > 0) {
-          if (!countSecond) {
-            const allTrueFirst = data.every(
-              (obj: AddressData) => obj.firstStatus === true
+      if (data.length > 0) {
+        if (!countSecond) {
+          const allTrueFirst = data.every(
+            (obj: AddressData) => obj.firstStatus === true
+          );
+          if (!allTrueFirst) {
+            const newData = data.filter(
+              (address: AddressData) => address.firstStatus === false
             );
-            if (!allTrueFirst) {
-              const newData = data.filter(
-                (address: AddressData) => address.firstStatus === false
-              );
-              setCiclicoData(newData);
-            } else {
-              navigate({
-                name: "Inicio",
-              });
-              await loadListInventoryData();
-            }
+            setCiclicoData(newData);
           } else {
-            const newDataSecond = data.filter(
-              (address: AddressData) => address.secondStatus === false
-            );
+            navigate({
+              name: "Inicio",
+            });
+            await loadListInventoryData();
+          }
+        } else {
+          const newDataSecond = data.filter(
+            (address: AddressData) => address.secondStatus === false
+          );
 
-            if (newDataSecond.length > 0) {
-              setCiclicoData(newDataSecond);
-            } else {
-              navigate({
-                name: "Inicio",
-              });
-              await loadListInventoryData();
-            }
+          if (newDataSecond.length > 0) {
+            setCiclicoData(newDataSecond);
+          } else {
+            navigate({
+              name: "Inicio",
+            });
+            await loadListInventoryData();
           }
         }
-
-        setLoadingFetch(false);
-      } catch (error) {
-        setLoadingFetch(false);
-        setAddressData(null);
-        console.log(error);
       }
+
+      setLoadingFetch(false);
+    } catch (error) {
+      setLoadingFetch(false);
+      setAddressData(null);
+      console.log(error);
     }
   }
 

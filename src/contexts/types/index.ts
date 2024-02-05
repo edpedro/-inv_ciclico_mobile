@@ -21,6 +21,7 @@ export interface AddressData {
 
 export interface ItemData {
   id: number;
+  codeEnd: number;
   item: string;
   descricao: string;
   endereco: string;

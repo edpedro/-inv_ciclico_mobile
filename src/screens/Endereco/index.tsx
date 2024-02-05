@@ -44,9 +44,10 @@ export default function Endereco({ route, navigation }: Props) {
   const { id, type } = route.params;
 
   useEffect(() => {
-    if (type === "geral") {
+    if (type !== "geral") {
       ListCiclicoInventoryData(id);
     } else {
+      ListCiclicoInventoryData(id);
       ListAddressInventoryData(id);
     }
     ListOneAddressData(id);

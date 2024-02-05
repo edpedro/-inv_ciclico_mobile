@@ -7,7 +7,6 @@ import {
   Button,
   Input as InputNative,
   Icon,
-  ScrollView,
 } from "native-base";
 import { useForm, Controller } from "react-hook-form";
 import { debounce } from "lodash";
@@ -54,9 +53,13 @@ export default function FlatListEnderecoGeral() {
   const handleInputAdressChange = debounce((address: string) => {
     setLoandingAddress(true);
 
-    const resultEnd = ciclicoData.filter(
-      (end) => end.endereco.toUpperCase() === address.toUpperCase()
-    );
+    const resultEnd = ciclicoData
+      ? ciclicoData.filter(
+          (end) =>
+            end.endereco.toUpperCase() === address.toUpperCase() ||
+            end.codeEnd === parseInt(address)
+        )
+      : [];
 
     if (resultEnd.length > 0) {
       setAtiveInputCodigo(true);
