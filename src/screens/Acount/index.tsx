@@ -13,21 +13,22 @@ export default function Acount() {
           Sistema de Pontos
         </Heading>
         <Text>
-          Soma Total: <Text bold>{points.somaTotal}</Text>
+          Soma Total: <Text bold>{points && points.somaTotal}</Text>
         </Text>
         <Text>
-          Total de acertos: <Text bold>{points.totalPrimeiraContagem}</Text>
+          Total de acertos:{" "}
+          <Text bold>{points && points.totalPrimeiraContagem}</Text>
         </Text>
         <Text>
           Total de erros:
           <Text bold>
-            {points.totalSegundaContagem <= 0
-              ? ` ${points.totalSegundaContagem}`
-              : `-${points.totalSegundaContagem}`}
+            {points && points.totalSegundaContagem <= 0
+              ? ` ${points && points.totalSegundaContagem}`
+              : `-${points && points.totalSegundaContagem}`}
           </Text>
         </Text>
         <Text>
-          Total de pontos: <Text bold>{points.totalPoints}</Text>
+          Total de pontos: <Text bold>{points && points.totalPoints}</Text>
         </Text>
       </Box>
       <Center mt="60">

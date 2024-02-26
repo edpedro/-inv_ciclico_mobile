@@ -42,9 +42,24 @@ export interface UpdateData {
   status?: boolean;
 }
 
+export interface AddItemData {
+  item: string;
+  endereco: number;
+  firstCount: number;
+}
+
 export interface UIpoints {
   somaTotal: number;
   totalPrimeiraContagem: number;
   totalSegundaContagem: number;
   totalPoints: number;
+}
+
+export interface UIadress {
+  id: number;
+  name: string;
+  codeAdress: number;
+  descriptionAdress: string;
+  create_id: string;
+  user_id: string;
 }

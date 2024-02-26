@@ -1,7 +1,14 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import api from "../../services/api";
 import { useAuth } from "./Auth";
-import { AddressData, InventoryData, ItemData, UpdateData } from "../types";
+import {
+  AddItemData,
+  AddressData,
+  InventoryData,
+  ItemData,
+  UIadress,
+  UpdateData,
+} from "../types";
 import Toast from "react-native-toast-message";
 import { navigate } from "../../routes/stack/Navigate";
 import { useLoading } from "./Loading";
@@ -16,6 +23,7 @@ interface InventoryContextData {
   updateDataTrue: boolean;
   allFirstSecondStatus: boolean;
   ciclicoData?: ItemData[];
+  adressesData?: UIadress[];
   loadListInventoryData: () => Promise<void>;
   ListAddressInventoryData: (id: string) => Promise<void>;
   ListOneAddressData: (id: string) => Promise<void>;
@@ -24,6 +32,8 @@ interface InventoryContextData {
   UpdateItemData: (id: string, type: string, data: UpdateData) => Promise<void>;
   setUpdateDataTrue: (value: boolean) => void;
   ListCiclicoInventoryData: (id: string) => Promise<void>;
+  ListAllAdresses: () => Promise<void>;
+  StoreItemInventario: (id: string, dataItem: AddItemData) => Promise<void>;
 }
 
 const InventoryContext = createContext<InventoryContextData>(
@@ -44,6 +54,7 @@ export const InventoryProvider: React.FC<{ children: React.ReactNode }> = ({
   const [allFirstSecondStatus, setAllFirstSecondStatus] = useState(true);
   const [countSecond, setCountSecond] = useState(false);
   const [ciclicoData, setCiclicoData] = useState<ItemData[]>();
+  const [adressesData, setAdressesData] = useState<UIadress[]>();
 
   const { setLoadingFetch } = useLoading();
 
@@ -348,7 +359,38 @@ export const InventoryProvider: React.FC<{ children: React.ReactNode }> = ({
       console.log(error);
     }
   }
+  async function ListAllAdresses(): Promise<void> {
+    const { data } = await api.get(`/adresses`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
+    setAdressesData(data);
+  }
+
+  async function StoreItemInventario(
+    id: string,
+    dataItem: AddItemData
+  ): Promise<void> {
+    try {
+      setLoadingFetch(true);
+      await api.post(`/ciclico/store/${id}`, dataItem, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      Toast.show({
+        type: "success",
+        text1: "Status",
+        text2: "Adicionando com sucesso",
+      });
+      setLoadingFetch(false);
+    } catch (error) {
+      setLoadingFetch(false);
+      console.log(error);
+    }
+  }
   return (
     <InventoryContext.Provider
       value={{
@@ -369,6 +411,9 @@ export const InventoryProvider: React.FC<{ children: React.ReactNode }> = ({
         setUpdateDataTrue,
         ciclicoData,
         ListCiclicoInventoryData,
+        ListAllAdresses,
+        adressesData,
+        StoreItemInventario,
       }}
     >
       {children}

@@ -51,7 +51,7 @@ export default function Item() {
             <FlatList
               data={enderecoItemData}
               renderItem={({ item }) => <FlatListItem data={item} />}
-              keyExtractor={(item) => item.id}
+              keyExtractor={(item) => String(item.id)}
             />
           ) : null}
         </>

@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "mobile",
-    "slug": "inventario",
+    "slug": "apk-inv",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -29,7 +29,7 @@
     },
     "extra": {
       "eas": {
-        "projectId": "af5fd71c-bb24-4cbb-96d6-ab49398ed47b"
+        "projectId": "44f8d56f-d421-4a7b-a15c-11496326627f"
       }
     },
     "runtimeVersion": {

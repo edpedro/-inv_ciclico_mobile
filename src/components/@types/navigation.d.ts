@@ -16,6 +16,10 @@ export declare global {
       Input: {
         dataItem: ItemData;
       };
+
+      AddItem: {
+        id: string;
+      };
     }
   }
 }
