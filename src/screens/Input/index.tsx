@@ -41,6 +41,7 @@ export default function Input({ route }: { route: ItemRouteProp }) {
   const [loading, setLoanding] = useState(false);
 
   const [saldo, setSaldo] = useState(false);
+  const [codigo, setCodigo] = useState("");
   const [descricao, setDescricao] = useState("");
   const [endereco, setEndereco] = useState("");
 
@@ -57,6 +58,7 @@ export default function Input({ route }: { route: ItemRouteProp }) {
 
     if (dataItem.catItem !== "MOVEL") {
       setAtiveInput(true);
+      setCodigo(dataItem.item);
       setDescricao(dataItem.descricao);
       setEndereco(dataItem.endereco);
     }
@@ -117,7 +119,7 @@ export default function Input({ route }: { route: ItemRouteProp }) {
                 }}
                 onBlur={onBlur}
                 onChangeText={handleInputChange}
-                value={value}
+                value={codigo || value}
               />
             )}
             name="codigo"

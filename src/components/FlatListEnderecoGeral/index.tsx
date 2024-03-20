@@ -91,7 +91,7 @@ export default function FlatListEnderecoGeral() {
   }, 500);
 
   const onSubmit = (value) => {
-    if (descricao && value.saldoFisico) {
+    if (value.saldoFisico) {
       const data: UpdateData = {
         id: Number(updateItem.id),
         saldoFisico: Number(value.saldoFisico),

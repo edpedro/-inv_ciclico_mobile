@@ -92,7 +92,7 @@ export default function Endereco({ route }: Props) {
           {addressData && addressData.length > 0 ? (
             type === "geral" ? (
               <FlatListEnderecoGeral />
-            ) : type === "ciclico" ? (
+            ) : (
               <FlatList
                 data={addressData}
                 renderItem={({ item }) => {
@@ -100,7 +100,7 @@ export default function Endereco({ route }: Props) {
                 }}
                 keyExtractor={(address: AddressData) => address.id}
               />
-            ) : null
+            )
           ) : null}
         </>
       )}
